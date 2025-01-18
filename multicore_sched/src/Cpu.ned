@@ -22,9 +22,7 @@ simple Cpu
 {
     parameters:
         @display("i=device/cpu,red,0");
-        @signal[turnaroundTimeSignal];
-        @statistic[turnaroundTime](source="turnaroundTimeSignal"; record=mean,vector);
-
+        
     gates:
         input processIn;
         output processOut;

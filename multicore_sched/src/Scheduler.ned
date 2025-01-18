@@ -21,6 +21,9 @@ package multicore_sched;
 simple Scheduler
 {
     parameters:
+        @signal[turnaroundTimeSignal];
+        @statistic[turnaroundTime](source="turnaroundTimeSignal"; record=mean,vector);
+
         bool isFCFS = default(true);
 
         @display("i=block/queue");

@@ -25,7 +25,6 @@ using namespace omnetpp;
  */
 class Cpu : public cSimpleModule
 {
-    simsignal_t turnaroundTime_;
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

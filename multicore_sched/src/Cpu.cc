@@ -20,7 +20,7 @@ Define_Module(Cpu);
 
 void Cpu::initialize()
 {
-    turnaroundTime_ = registerSignal("turnaroundTimeSignal");
+    
 }
 
 void Cpu::handleMessage(cMessage *msg)
@@ -46,15 +46,6 @@ void Cpu::handleMessage(cMessage *msg)
         
         // process has finished executing
         process->setName("cpuFree");
-        
-
-        if (process->isFinalPhase())
-        {
-            // process has ended
-            simtime_t turnaroundTime = simTime() - process->getCreationTime();
-            emit(turnaroundTime_, turnaroundTime);
-            EV << "Turnaround time: " << turnaroundTime << endl;
-        }
 
         // send message to scheduler
         send(process, "processOut");

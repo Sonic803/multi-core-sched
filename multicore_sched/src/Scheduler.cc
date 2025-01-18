@@ -21,7 +21,7 @@ using namespace std;
 
 Define_Module(Scheduler);
 
-int ProcessComparatorSJF(cObject *a, cObject *b) 
+int Scheduler::ProcessComparatorSJF(cObject *a, cObject *b) 
 {
     MsgProcess *aProcess = check_and_cast<MsgProcess*>(a);
     MsgProcess *bProcess = check_and_cast<MsgProcess*>(b);
@@ -38,6 +38,8 @@ int ProcessComparatorSJF(cObject *a, cObject *b)
 
 void Scheduler::initialize()
 {
+    turnaroundTime_ = registerSignal("turnaroundTimeSignal");
+
     bool FCFS = par("isFCFS").boolValue();
     if (!FCFS) 
         readyQueue_.setup(ProcessComparatorSJF);
@@ -77,6 +79,10 @@ void Scheduler::handleMessage(cMessage *msg)
             scheduleAfter(process->getIODuration(), process);
         }
         else {
+            // process has ended
+            simtime_t turnaroundTime = simTime() - process->getCreationTime();
+            emit(turnaroundTime_, turnaroundTime);
+            EV << "Turnaround time: " << turnaroundTime << endl;
             delete process;
         }
     }
@@ -108,10 +114,8 @@ void Scheduler::scheduleProcess()
 
 Scheduler::~Scheduler()
 {
-    while (!readyQueue_.isEmpty()) {
-        delete readyQueue_.front();
-        readyQueue_.pop();
-    }
+    while (!readyQueue_.isEmpty())
+        delete readyQueue_.pop();
 
     while (!cpuQueue_.empty()) {
         cpuQueue_.pop();

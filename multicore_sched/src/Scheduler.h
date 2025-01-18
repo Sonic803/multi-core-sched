@@ -26,11 +26,14 @@ using namespace omnetpp;
  */
 class Scheduler : public cSimpleModule
 {
+    simsignal_t turnaroundTime_;
+
     cQueue readyQueue_;
     std::queue<int> cpuQueue_;
 
     int numGatesCpu_;
 
+    static int ProcessComparatorSJF(cObject *a, cObject *b);
     void scheduleProcess();
 
   protected:
