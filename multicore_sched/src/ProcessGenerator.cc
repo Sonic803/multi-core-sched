@@ -36,7 +36,7 @@ void ProcessGenerator::handleMessage(cMessage *msg)
     // event generationTimer
     MsgProcess *newProcess = new MsgProcess("newProcess");
 
-    double duration = exponential(1/meanProcessDuration_, 1);
+    double duration = exponential(meanProcessDuration_, 1);
 
     double random = uniform(0, 1, 2);
     double IOPercentage;
@@ -65,6 +65,6 @@ ProcessGenerator::~ProcessGenerator()
 
 void ProcessGenerator::scheduleNext()
 {
-    simtime_t generationTime = (simtime_t)exponential(1/meanGenerationTime_, 0);
+    simtime_t generationTime = (simtime_t)exponential(meanGenerationTime_, 0);
     scheduleAfter(generationTime, timer_);
 }
