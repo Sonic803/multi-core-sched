@@ -30,10 +30,7 @@ int Scheduler::ProcessComparatorSJF(cObject *a, cObject *b)
     aRemainingTime = aProcess->isFinalPhase() ? aProcess->getFinalDuration() : aProcess->getInitDuration();
     bRemainingTime = bProcess->isFinalPhase() ? bProcess->getFinalDuration() : bProcess->getInitDuration();
 
-    if (aRemainingTime > bRemainingTime) {
-        return 1;
-    }
-    return 0;        
+    return aRemainingTime < bRemainingTime ? -1 : 1;
 }
 
 void Scheduler::initialize()
@@ -74,6 +71,8 @@ void Scheduler::handleMessage(cMessage *msg)
         if (!process->isFinalPhase()) {
             process->setIsFinalPhase(true);
             // process->setCpuID(-1);
+
+            EV << "Process " << process->getId() << " in I/O phase for " << process->getIODuration() << " seconds" << endl;
             
             process->setName("endIO");
             scheduleAfter(process->getIODuration(), process);
@@ -82,7 +81,7 @@ void Scheduler::handleMessage(cMessage *msg)
             // process has ended
             simtime_t turnaroundTime = simTime() - process->getCreationTime();
             emit(turnaroundTime_, turnaroundTime);
-            EV << "Turnaround time: " << turnaroundTime << endl;
+            EV << "Process " << process->getId() << " ended: turnaround time = " << turnaroundTime << endl;
             delete process;
         }
     }
@@ -102,11 +101,21 @@ void Scheduler::scheduleProcess()
     if (readyQueue_.isEmpty() || cpuQueue_.empty())
         return;
 
+    // log the process cqueue
+    EV << "Process queue: ";
+    for (cQueue::Iterator it(readyQueue_); !it.end(); it++) {
+        MsgProcess *process = check_and_cast<MsgProcess*>(*it);
+        EV << process->getId() << "(" << (process->isFinalPhase() ? process->getFinalDuration() : process->getInitDuration()) << ") <- ";
+    }
+    EV << endl;
+
     int cpuID = cpuQueue_.front();
     cpuQueue_.pop();
 
     MsgProcess *process = check_and_cast<MsgProcess*>(readyQueue_.front());
     readyQueue_.pop();
+
+    EV << "Process " << process->getId() << " scheduled on CPU " << cpuID << endl;
 
     // process->setCpuID(cpuID);
     send(process, "processCpuOut", cpuID);

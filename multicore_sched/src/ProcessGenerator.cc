@@ -42,9 +42,15 @@ void ProcessGenerator::handleMessage(cMessage *msg)
     double IOPercentage;
     double CPUPercentage;
     if (random < p_bound_) // CPU bound
+    {
         IOPercentage = IOPercentageCPUbound_;
+        EV << "New process " << newProcess->getId() << " generated (CPU bound)" << endl;
+    }
     else // IO bound
+    {
         IOPercentage = IOPercentageIObound_;
+        EV << "New process " << newProcess->getId() << " generated (IO bound)" << endl;
+    }
     CPUPercentage = 0.5 - IOPercentage/2;
 
     newProcess->setInitDuration(duration * CPUPercentage);
@@ -52,6 +58,8 @@ void ProcessGenerator::handleMessage(cMessage *msg)
     newProcess->setFinalDuration(duration * CPUPercentage);
     newProcess->setIsFinalPhase(false);
     // newProcess->setCpuID(-1);
+
+    EV << "New process " << newProcess->getId() << " duration: " << duration << endl;
 
     send(newProcess, "processOut");
 

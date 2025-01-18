@@ -35,9 +35,15 @@ void Cpu::handleMessage(cMessage *msg)
         // process to be executed
         process->setName("executing");
         if (!process->isFinalPhase())
+        {
+            EV << "Process " << process->getId() << " in init phase for " << process->getInitDuration() << " seconds" << endl;
             scheduleAfter(process->getInitDuration(), process);
+        }  
         else
+        {
+            EV << "Process " << process->getId() << " in final phase for " << process->getFinalDuration() << " seconds" << endl;
             scheduleAfter(process->getFinalDuration(), process);
+        }
     }
     else if (process->isName("executing"))
     {
