@@ -1,3 +1,0 @@
-package project;
-
-@license(LGPL);
