@@ -25,9 +25,7 @@ network Computer
         int numCpus = default(4);
 
     submodules:
-        cpu[numCpus]: Cpu {
-            @display("p=100,100");
-        }
+        cpu[numCpus]: Cpu;
         scheduler: Scheduler {
             @display("p=100,300");
         }

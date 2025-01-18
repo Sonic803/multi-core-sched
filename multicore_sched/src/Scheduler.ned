@@ -22,7 +22,8 @@ simple Scheduler
 {
     parameters:
         bool isFCFS = default(true);
-    
+
+        @display("i=block/queue");
     gates:
         input newProcessIn;
         input processCpuIn[];

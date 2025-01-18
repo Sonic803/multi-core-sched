@@ -3,15 +3,15 @@
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+//
 
 #include "Cpu.h"
 #include "msgProcess_m.h"
@@ -25,23 +25,30 @@ void Cpu::initialize()
 
 void Cpu::handleMessage(cMessage *msg)
 {
-    MsgProcess *process = check_and_cast<MsgProcess*>(msg);
+    MsgProcess *process = check_and_cast<MsgProcess *>(msg);
 
-    if(process->isName("process"))
+    if (process->isName("process"))
     {
+        // Change the color of the CPU when it is active
+        getDisplayString().setTagArg("i", 2, "40");
+
         // process to be executed
         process->setName("executing");
-        if (!process->isFinalPhase()) 
+        if (!process->isFinalPhase())
             scheduleAfter(process->getInitDuration(), process);
         else
             scheduleAfter(process->getFinalDuration(), process);
     }
-    else if(process->isName("executing"))
+    else if (process->isName("executing"))
     {
+        // Change the color of the CPU when it finishes executing
+        getDisplayString().setTagArg("i", 2, "0");
+        
         // process has finished executing
         process->setName("cpuFree");
+        
 
-        if (process->isFinalPhase()) 
+        if (process->isFinalPhase())
         {
             // process has ended
             simtime_t turnaroundTime = simTime() - process->getCreationTime();
