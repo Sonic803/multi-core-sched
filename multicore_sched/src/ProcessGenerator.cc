@@ -20,12 +20,13 @@ Define_Module(ProcessGenerator);
 
 void ProcessGenerator::initialize()
 {
-    meanGenerationTime_ = par("meanGenerationTime");
-    meanProcessDuration_ = par("meanProcessDuration");
-    p_bound_ = par("p_bound");
+    p_cpu_bound_ = par("p_cpu_bound");
 
     IOPercentageCPUbound_ = par("IOPercentageCPUbound");
     IOPercentageIObound_ = par("IOPercentageIObound");
+
+    generationRandom_ = par("generationRandom");
+    durationRandom_ = par("durationRandom");
 
     timer_ = new cMessage("generationTimer");
     scheduleNext();
@@ -36,12 +37,13 @@ void ProcessGenerator::handleMessage(cMessage *msg)
     // event generationTimer
     MsgProcess *newProcess = new MsgProcess("newProcess");
 
-    double duration = exponential(meanProcessDuration_, 1);
+    // double duration = exponential(meanProcessDuration_, 1);
+    double duration = durationRandom_;
 
     double random = uniform(0, 1, 2);
     double IOPercentage;
     double CPUPercentage;
-    if (random < p_bound_) // CPU bound
+    if (random < p_cpu_bound_) // CPU bound
     {
         IOPercentage = IOPercentageCPUbound_;
         EV << "New process " << newProcess->getId() << " generated (CPU bound)" << endl;
@@ -73,6 +75,7 @@ ProcessGenerator::~ProcessGenerator()
 
 void ProcessGenerator::scheduleNext()
 {
-    simtime_t generationTime = (simtime_t)exponential(meanGenerationTime_, 0);
+    // simtime_t generationTime = (simtime_t)exponential(meanGenerationTime_, 0);
+    simtime_t generationTime = (simtime_t)generationRandom_;
     scheduleAfter(generationTime, timer_);
 }

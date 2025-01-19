@@ -25,9 +25,9 @@ using namespace omnetpp;
  */
 class ProcessGenerator : public cSimpleModule
 {
-    double meanGenerationTime_;
-    double meanProcessDuration_;
-    double p_bound_;
+    double p_cpu_bound_;
+    double generationRandom_;
+    double durationRandom_;
 
     double IOPercentageCPUbound_;
     double IOPercentageIObound_;
