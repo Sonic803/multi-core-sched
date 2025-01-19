@@ -17,6 +17,7 @@
   - Continuity test
 - calibration:
   - Possibile che sia necessario cercare su google dei valori sensati per la media di T, D e p.
+- array di seed
   
 ## Note
 

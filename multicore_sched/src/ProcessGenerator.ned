@@ -24,8 +24,6 @@ simple ProcessGenerator
         double meanGenerationTime @unit("s") = default(1s);
         double meanProcessDuration @unit("s") = default(1s);
         double p_cpu_bound = default(0.5);
-        double generationRandom @unit("s")= default(exponential(meanGenerationTime,0));
-        double durationRandom @unit("s")= default(exponential(meanProcessDuration,1));
 
         double IOPercentageCPUbound = default(0.2);
         double IOPercentageIObound = default(0.8);
