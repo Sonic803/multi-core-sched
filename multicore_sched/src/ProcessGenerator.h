@@ -31,11 +31,16 @@ class ProcessGenerator : public cSimpleModule
 
   double IOPercentageCPUbound_;
   double IOPercentageIObound_;
+
+  std::string generationType_;
+  std::string durationType_;
+
   cMessage *timer_;
   void scheduleNext();
 
 protected:
   virtual void initialize();
+  void validateParameters();
   virtual void handleMessage(cMessage *msg);
   ~ProcessGenerator();
 };

@@ -18,6 +18,42 @@
 
 Define_Module(ProcessGenerator);
 
+void ProcessGenerator::validateParameters()
+{
+    if (meanGenerationTime_ <= 0)
+    {
+        error("meanGenerationTime must be positive");
+    }
+    if (meanProcessDuration_ <= 0)
+    {
+        error("meanProcessDuration must be positive");
+    }
+    if (p_cpu_bound_ > 1 || p_cpu_bound_ < 0)
+    {
+        error("p_cpu_bound must be between 0 and 1");
+    }
+    if (IOPercentageCPUbound_ > 1 || IOPercentageCPUbound_ < 0)
+    {
+        error("IOPercentageCPUbound must be between 0 and 1");
+    }
+    if (IOPercentageIObound_ > 1 || IOPercentageIObound_ < 0)
+    {
+        error("IOPercentageIObound must be between 0 and 1");
+    }
+    if (IOPercentageCPUbound_ + IOPercentageIObound_ != 1)
+    {
+        error("IOPercentageCPUbound + IOPercentageIObound must be equal to 1");
+    }
+    if (generationType_ != "exponential" && generationType_ != "uniform")
+    {
+        error("Unknown generation type");
+    }
+    if (durationType_ != "exponential" && durationType_ != "uniform")
+    {
+        error("Unknown duration type");
+    }
+}
+
 void ProcessGenerator::initialize()
 {
     meanGenerationTime_ = par("meanGenerationTime");
@@ -27,7 +63,13 @@ void ProcessGenerator::initialize()
     IOPercentageCPUbound_ = par("IOPercentageCPUbound");
     IOPercentageIObound_ = par("IOPercentageIObound");
 
+    generationType_ = par("generationType").stringValue();
+    durationType_ = par("durationType").stringValue();
+
+    validateParameters();
+
     timer_ = new cMessage("generationTimer");
+
     scheduleNext();
 }
 
@@ -36,7 +78,16 @@ void ProcessGenerator::handleMessage(cMessage *msg)
     // event generationTimer
     MsgProcess *newProcess = new MsgProcess("newProcess");
 
-    double duration = exponential(meanProcessDuration_, 1);
+    double duration;
+
+    if (durationType_ == "exponential")
+    {
+        duration = exponential(meanProcessDuration_, 1);
+    }
+    else if (durationType_ == "uniform")
+    {
+        duration = uniform(0, meanProcessDuration_ * 2, 1);
+    }
 
     double random = uniform(0, 1, 2);
     double IOPercentage;
@@ -73,6 +124,14 @@ ProcessGenerator::~ProcessGenerator()
 
 void ProcessGenerator::scheduleNext()
 {
-    simtime_t generationTime = (simtime_t)exponential(meanGenerationTime_, 0);
+    simtime_t generationTime;
+    if (generationType_ == "exponential")
+    {
+        generationTime = (simtime_t)exponential(meanGenerationTime_, 0);
+    }
+    else if (generationType_ == "uniform")
+    {
+        generationTime = (simtime_t)uniform(0, meanGenerationTime_ * 2, 0);
+    }
     scheduleAfter(generationTime, timer_);
 }

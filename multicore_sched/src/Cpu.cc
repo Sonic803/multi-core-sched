@@ -20,7 +20,6 @@ Define_Module(Cpu);
 
 void Cpu::initialize()
 {
-    
 }
 
 void Cpu::handleMessage(cMessage *msg)
@@ -38,7 +37,7 @@ void Cpu::handleMessage(cMessage *msg)
         {
             EV << "Process " << process->getId() << " in init phase for " << process->getInitDuration() << " seconds" << endl;
             scheduleAfter(process->getInitDuration(), process);
-        }  
+        }
         else
         {
             EV << "Process " << process->getId() << " in final phase for " << process->getFinalDuration() << " seconds" << endl;
@@ -49,7 +48,7 @@ void Cpu::handleMessage(cMessage *msg)
     {
         // Change the color of the CPU when it finishes executing
         getDisplayString().setTagArg("i", 2, "0");
-        
+
         // process has finished executing
         process->setName("cpuFree");
 
