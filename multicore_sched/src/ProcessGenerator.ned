@@ -28,8 +28,8 @@ simple ProcessGenerator
         double IOPercentageCPUbound = default(0.2);
         double IOPercentageIObound = default(0.8);
 
-        string generationType @enum("exponential","uniform") = default("exponential");
-        string durationType @enum("exponential","uniform") = default("exponential");
+        string generationType @enum("exponential","uniform","constant") = default("exponential");
+        string durationType @enum("exponential","uniform","constant") = default("exponential");
 
 
     gates:

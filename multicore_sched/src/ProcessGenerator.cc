@@ -44,11 +44,11 @@ void ProcessGenerator::validateParameters()
     {
         error("IOPercentageCPUbound + IOPercentageIObound must be equal to 1");
     }
-    if (generationType_ != "exponential" && generationType_ != "uniform")
+    if (generationType_ != "exponential" && generationType_ != "uniform" && generationType_ != "constant")
     {
         error("Unknown generation type");
     }
-    if (durationType_ != "exponential" && durationType_ != "uniform")
+    if (durationType_ != "exponential" && durationType_ != "uniform" && durationType_ != "constant")
     {
         error("Unknown duration type");
     }
@@ -87,6 +87,10 @@ void ProcessGenerator::handleMessage(cMessage *msg)
     else if (durationType_ == "uniform")
     {
         duration = uniform(0, meanProcessDuration_ * 2, 1);
+    }
+    else if (durationType_ == "constant")
+    {
+        duration = meanProcessDuration_;
     }
 
     double random = uniform(0, 1, 2);
@@ -132,6 +136,10 @@ void ProcessGenerator::scheduleNext()
     else if (generationType_ == "uniform")
     {
         generationTime = (simtime_t)uniform(0, meanGenerationTime_ * 2, 0);
+    }
+    else if (generationType_ == "constant")
+    {
+        generationTime = (simtime_t)meanGenerationTime_;
     }
     scheduleAfter(generationTime, timer_);
 }
