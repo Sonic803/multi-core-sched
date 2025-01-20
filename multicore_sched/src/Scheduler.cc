@@ -36,6 +36,9 @@ int Scheduler::ProcessComparatorSJF(cObject *a, cObject *b)
 void Scheduler::initialize()
 {
     turnaroundTime_ = registerSignal("turnaroundTimeSignal");
+    waitedReadyTime_ = registerSignal("waitedReadyTimeSignal");
+    numProcReady_ = registerSignal("numProcReadySignal");
+    numBusyCpus_ = registerSignal("numBusyCpusSignal");
 
     bool FCFS = par("isFCFS").boolValue();
     if (!FCFS)
@@ -62,6 +65,7 @@ void Scheduler::handleMessage(cMessage *msg)
     if (process->isName("newProcess"))
     {
         process->setName("process");
+        process->setReadyQueueArrivalTime(simTime());
         readyQueue_.insert(process);
     }
     else if (process->isName("cpuFree"))
@@ -72,7 +76,6 @@ void Scheduler::handleMessage(cMessage *msg)
         if (!process->isFinalPhase())
         {
             process->setIsFinalPhase(true);
-            // process->setCpuID(-1);
 
             EV << "Process " << process->getId() << " in I/O phase for " << process->getIODuration() << " seconds" << endl;
 
@@ -82,21 +85,34 @@ void Scheduler::handleMessage(cMessage *msg)
         else
         {
             // process has ended
+            // emit the turnaround time
             simtime_t turnaroundTime = simTime() - process->getCreationTime();
             emit(turnaroundTime_, turnaroundTime);
             EV << "Process " << process->getId() << " ended: turnaround time = " << turnaroundTime << endl;
+            // emit the waited time in the ready queue
+            simtime_t waitedReadyTime = process->getTimeWaitedInReadyQueue();
+            emit(waitedReadyTime_, waitedReadyTime);
+            EV << "Process " << process->getId() << " waited in ready queue for " << waitedReadyTime << endl;
+
             delete process;
         }
     }
     else if (process->isName("endIO"))
     {
         process->setName("process");
+        process->setReadyQueueArrivalTime(simTime());
         readyQueue_.insert(process);
     }
     else
         throw cRuntimeError("Scheduler::handlemessage - message not supported");
 
     scheduleProcess();
+
+    // Emit the number of processes in the ready queue
+    emit(numProcReady_, readyQueue_.getLength());
+
+    // Emit the number of busy CPUs
+    emit(numBusyCpus_, numGatesCpu_ - cpuQueue_.size());
 
     // Display the queue length
     getDisplayString().setTagArg("t", 0, readyQueue_.getLength());
@@ -123,6 +139,9 @@ void Scheduler::scheduleProcess()
     readyQueue_.pop();
 
     EV << "Process " << process->getId() << " scheduled on CPU " << cpuID << endl;
+
+    // Update the time waited in the ready queue
+    process->setTimeWaitedInReadyQueue(simTime() - process->getReadyQueueArrivalTime());
 
     // process->setCpuID(cpuID);
     send(process, "processCpuOut", cpuID);

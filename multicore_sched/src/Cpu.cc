@@ -20,6 +20,7 @@ Define_Module(Cpu);
 
 void Cpu::initialize()
 {
+    cpuBusyTime_ = registerSignal("cpuBusyTimeSignal");
 }
 
 void Cpu::handleMessage(cMessage *msg)
@@ -33,6 +34,8 @@ void Cpu::handleMessage(cMessage *msg)
 
         // process to be executed
         process->setName("executing");
+        process->setCpuArrivalTime(simTime());
+
         if (!process->isFinalPhase())
         {
             EV << "Process " << process->getId() << " in init phase for " << process->getInitDuration() << " seconds" << endl;
@@ -51,6 +54,9 @@ void Cpu::handleMessage(cMessage *msg)
 
         // process has finished executing
         process->setName("cpuFree");
+
+        // Emit the for how long was the cpu busy
+        emit(cpuBusyTime_, simTime() - process->getCpuArrivalTime());
 
         // send message to scheduler
         send(process, "processOut");

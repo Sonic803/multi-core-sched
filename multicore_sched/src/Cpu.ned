@@ -21,6 +21,10 @@ package multicore_sched;
 simple Cpu
 {
     parameters:
+        @signal[cpuBusyTimeSignal];
+        @statistic[cpuBusyTime](source="cpuBusyTimeSignal"; record=mean,vector);
+        @statistic[cpuUtilization](source="cpuBusyTimeSignal"; record=timeavg);
+
         @display("i=device/cpu,red,0");
         
     gates:

@@ -20,6 +20,10 @@ message MsgProcess {
     simtime_t InitDuration;
     simtime_t IODuration;
     simtime_t finalDuration;
+    simtime_t cpuArrivalTime;
+    simtime_t readyQueueArrivalTime;
+    simtime_t timeWaitedInReadyQueue;
+
     bool isFinalPhase; // true if the process is executing the final processing phase
     // int cpuID; // the ID of the CPU where the process is currently running on
 }

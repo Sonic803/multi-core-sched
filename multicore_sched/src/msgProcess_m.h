@@ -28,6 +28,10 @@ class MsgProcess;
  *     simtime_t InitDuration;
  *     simtime_t IODuration;
  *     simtime_t finalDuration;
+ *     simtime_t cpuArrivalTime;
+ *     simtime_t readyQueueArrivalTime;
+ *     simtime_t timeWaitedInReadyQueue;
+ * 
  *     bool isFinalPhase; // true if the process is executing the final processing phase
  *     // int cpuID; // the ID of the CPU where the process is currently running on
  * }
@@ -39,6 +43,9 @@ class MsgProcess : public ::omnetpp::cMessage
     omnetpp::simtime_t InitDuration = SIMTIME_ZERO;
     omnetpp::simtime_t IODuration = SIMTIME_ZERO;
     omnetpp::simtime_t finalDuration = SIMTIME_ZERO;
+    omnetpp::simtime_t cpuArrivalTime = SIMTIME_ZERO;
+    omnetpp::simtime_t readyQueueArrivalTime = SIMTIME_ZERO;
+    omnetpp::simtime_t timeWaitedInReadyQueue = SIMTIME_ZERO;
     bool isFinalPhase_ = false;
 
   private:
@@ -64,6 +71,15 @@ class MsgProcess : public ::omnetpp::cMessage
 
     virtual omnetpp::simtime_t getFinalDuration() const;
     virtual void setFinalDuration(omnetpp::simtime_t finalDuration);
+
+    virtual omnetpp::simtime_t getCpuArrivalTime() const;
+    virtual void setCpuArrivalTime(omnetpp::simtime_t cpuArrivalTime);
+
+    virtual omnetpp::simtime_t getReadyQueueArrivalTime() const;
+    virtual void setReadyQueueArrivalTime(omnetpp::simtime_t readyQueueArrivalTime);
+
+    virtual omnetpp::simtime_t getTimeWaitedInReadyQueue() const;
+    virtual void setTimeWaitedInReadyQueue(omnetpp::simtime_t timeWaitedInReadyQueue);
 
     virtual bool isFinalPhase() const;
     virtual void setIsFinalPhase(bool isFinalPhase);

@@ -40,10 +40,6 @@ void ProcessGenerator::validateParameters()
     {
         error("IOPercentageIObound must be between 0 and 1");
     }
-    if (IOPercentageCPUbound_ + IOPercentageIObound_ != 1)
-    {
-        error("IOPercentageCPUbound + IOPercentageIObound must be equal to 1");
-    }
     if (generationType_ != "exponential" && generationType_ != "uniform" && generationType_ != "constant")
     {
         error("Unknown generation type");
@@ -112,7 +108,7 @@ void ProcessGenerator::handleMessage(cMessage *msg)
     newProcess->setIODuration(duration * IOPercentage);
     newProcess->setFinalDuration(duration * CPUPercentage);
     newProcess->setIsFinalPhase(false);
-    // newProcess->setCpuID(-1);
+    newProcess->setTimeWaitedInReadyQueue(0);
 
     EV << "New process " << newProcess->getId() << " duration: " << duration << endl;
 

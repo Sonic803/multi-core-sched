@@ -27,6 +27,9 @@ using namespace omnetpp;
 class Scheduler : public cSimpleModule
 {
   simsignal_t turnaroundTime_;
+  simsignal_t waitedReadyTime_;
+  simsignal_t numProcReady_;
+  simsignal_t numBusyCpus_;
 
   cQueue readyQueue_;
   std::queue<int> cpuQueue_;

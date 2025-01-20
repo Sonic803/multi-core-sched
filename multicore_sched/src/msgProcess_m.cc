@@ -178,6 +178,9 @@ void MsgProcess::copy(const MsgProcess& other)
     this->InitDuration = other.InitDuration;
     this->IODuration = other.IODuration;
     this->finalDuration = other.finalDuration;
+    this->cpuArrivalTime = other.cpuArrivalTime;
+    this->readyQueueArrivalTime = other.readyQueueArrivalTime;
+    this->timeWaitedInReadyQueue = other.timeWaitedInReadyQueue;
     this->isFinalPhase_ = other.isFinalPhase_;
 }
 
@@ -187,6 +190,9 @@ void MsgProcess::parsimPack(omnetpp::cCommBuffer *b) const
     doParsimPacking(b,this->InitDuration);
     doParsimPacking(b,this->IODuration);
     doParsimPacking(b,this->finalDuration);
+    doParsimPacking(b,this->cpuArrivalTime);
+    doParsimPacking(b,this->readyQueueArrivalTime);
+    doParsimPacking(b,this->timeWaitedInReadyQueue);
     doParsimPacking(b,this->isFinalPhase_);
 }
 
@@ -196,6 +202,9 @@ void MsgProcess::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->InitDuration);
     doParsimUnpacking(b,this->IODuration);
     doParsimUnpacking(b,this->finalDuration);
+    doParsimUnpacking(b,this->cpuArrivalTime);
+    doParsimUnpacking(b,this->readyQueueArrivalTime);
+    doParsimUnpacking(b,this->timeWaitedInReadyQueue);
     doParsimUnpacking(b,this->isFinalPhase_);
 }
 
@@ -229,6 +238,36 @@ void MsgProcess::setFinalDuration(omnetpp::simtime_t finalDuration)
     this->finalDuration = finalDuration;
 }
 
+omnetpp::simtime_t MsgProcess::getCpuArrivalTime() const
+{
+    return this->cpuArrivalTime;
+}
+
+void MsgProcess::setCpuArrivalTime(omnetpp::simtime_t cpuArrivalTime)
+{
+    this->cpuArrivalTime = cpuArrivalTime;
+}
+
+omnetpp::simtime_t MsgProcess::getReadyQueueArrivalTime() const
+{
+    return this->readyQueueArrivalTime;
+}
+
+void MsgProcess::setReadyQueueArrivalTime(omnetpp::simtime_t readyQueueArrivalTime)
+{
+    this->readyQueueArrivalTime = readyQueueArrivalTime;
+}
+
+omnetpp::simtime_t MsgProcess::getTimeWaitedInReadyQueue() const
+{
+    return this->timeWaitedInReadyQueue;
+}
+
+void MsgProcess::setTimeWaitedInReadyQueue(omnetpp::simtime_t timeWaitedInReadyQueue)
+{
+    this->timeWaitedInReadyQueue = timeWaitedInReadyQueue;
+}
+
 bool MsgProcess::isFinalPhase() const
 {
     return this->isFinalPhase_;
@@ -247,6 +286,9 @@ class MsgProcessDescriptor : public omnetpp::cClassDescriptor
         FIELD_InitDuration,
         FIELD_IODuration,
         FIELD_finalDuration,
+        FIELD_cpuArrivalTime,
+        FIELD_readyQueueArrivalTime,
+        FIELD_timeWaitedInReadyQueue,
         FIELD_isFinalPhase,
     };
   public:
@@ -314,7 +356,7 @@ const char *MsgProcessDescriptor::getProperty(const char *propertyName) const
 int MsgProcessDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
-    return base ? 4+base->getFieldCount() : 4;
+    return base ? 7+base->getFieldCount() : 7;
 }
 
 unsigned int MsgProcessDescriptor::getFieldTypeFlags(int field) const
@@ -329,9 +371,12 @@ unsigned int MsgProcessDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_InitDuration
         FD_ISEDITABLE,    // FIELD_IODuration
         FD_ISEDITABLE,    // FIELD_finalDuration
+        FD_ISEDITABLE,    // FIELD_cpuArrivalTime
+        FD_ISEDITABLE,    // FIELD_readyQueueArrivalTime
+        FD_ISEDITABLE,    // FIELD_timeWaitedInReadyQueue
         FD_ISEDITABLE,    // FIELD_isFinalPhase
     };
-    return (field >= 0 && field < 4) ? fieldTypeFlags[field] : 0;
+    return (field >= 0 && field < 7) ? fieldTypeFlags[field] : 0;
 }
 
 const char *MsgProcessDescriptor::getFieldName(int field) const
@@ -346,9 +391,12 @@ const char *MsgProcessDescriptor::getFieldName(int field) const
         "InitDuration",
         "IODuration",
         "finalDuration",
+        "cpuArrivalTime",
+        "readyQueueArrivalTime",
+        "timeWaitedInReadyQueue",
         "isFinalPhase",
     };
-    return (field >= 0 && field < 4) ? fieldNames[field] : nullptr;
+    return (field >= 0 && field < 7) ? fieldNames[field] : nullptr;
 }
 
 int MsgProcessDescriptor::findField(const char *fieldName) const
@@ -358,7 +406,10 @@ int MsgProcessDescriptor::findField(const char *fieldName) const
     if (strcmp(fieldName, "InitDuration") == 0) return baseIndex + 0;
     if (strcmp(fieldName, "IODuration") == 0) return baseIndex + 1;
     if (strcmp(fieldName, "finalDuration") == 0) return baseIndex + 2;
-    if (strcmp(fieldName, "isFinalPhase") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "cpuArrivalTime") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "readyQueueArrivalTime") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "timeWaitedInReadyQueue") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "isFinalPhase") == 0) return baseIndex + 6;
     return base ? base->findField(fieldName) : -1;
 }
 
@@ -374,9 +425,12 @@ const char *MsgProcessDescriptor::getFieldTypeString(int field) const
         "omnetpp::simtime_t",    // FIELD_InitDuration
         "omnetpp::simtime_t",    // FIELD_IODuration
         "omnetpp::simtime_t",    // FIELD_finalDuration
+        "omnetpp::simtime_t",    // FIELD_cpuArrivalTime
+        "omnetpp::simtime_t",    // FIELD_readyQueueArrivalTime
+        "omnetpp::simtime_t",    // FIELD_timeWaitedInReadyQueue
         "bool",    // FIELD_isFinalPhase
     };
-    return (field >= 0 && field < 4) ? fieldTypeStrings[field] : nullptr;
+    return (field >= 0 && field < 7) ? fieldTypeStrings[field] : nullptr;
 }
 
 const char **MsgProcessDescriptor::getFieldPropertyNames(int field) const
@@ -462,6 +516,9 @@ std::string MsgProcessDescriptor::getFieldValueAsString(omnetpp::any_ptr object,
         case FIELD_InitDuration: return simtime2string(pp->getInitDuration());
         case FIELD_IODuration: return simtime2string(pp->getIODuration());
         case FIELD_finalDuration: return simtime2string(pp->getFinalDuration());
+        case FIELD_cpuArrivalTime: return simtime2string(pp->getCpuArrivalTime());
+        case FIELD_readyQueueArrivalTime: return simtime2string(pp->getReadyQueueArrivalTime());
+        case FIELD_timeWaitedInReadyQueue: return simtime2string(pp->getTimeWaitedInReadyQueue());
         case FIELD_isFinalPhase: return bool2string(pp->isFinalPhase());
         default: return "";
     }
@@ -482,6 +539,9 @@ void MsgProcessDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int fi
         case FIELD_InitDuration: pp->setInitDuration(string2simtime(value)); break;
         case FIELD_IODuration: pp->setIODuration(string2simtime(value)); break;
         case FIELD_finalDuration: pp->setFinalDuration(string2simtime(value)); break;
+        case FIELD_cpuArrivalTime: pp->setCpuArrivalTime(string2simtime(value)); break;
+        case FIELD_readyQueueArrivalTime: pp->setReadyQueueArrivalTime(string2simtime(value)); break;
+        case FIELD_timeWaitedInReadyQueue: pp->setTimeWaitedInReadyQueue(string2simtime(value)); break;
         case FIELD_isFinalPhase: pp->setIsFinalPhase(string2bool(value)); break;
         default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'MsgProcess'", field);
     }
@@ -500,6 +560,9 @@ omnetpp::cValue MsgProcessDescriptor::getFieldValue(omnetpp::any_ptr object, int
         case FIELD_InitDuration: return pp->getInitDuration().dbl();
         case FIELD_IODuration: return pp->getIODuration().dbl();
         case FIELD_finalDuration: return pp->getFinalDuration().dbl();
+        case FIELD_cpuArrivalTime: return pp->getCpuArrivalTime().dbl();
+        case FIELD_readyQueueArrivalTime: return pp->getReadyQueueArrivalTime().dbl();
+        case FIELD_timeWaitedInReadyQueue: return pp->getTimeWaitedInReadyQueue().dbl();
         case FIELD_isFinalPhase: return pp->isFinalPhase();
         default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'MsgProcess' as cValue -- field index out of range?", field);
     }
@@ -520,6 +583,9 @@ void MsgProcessDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int
         case FIELD_InitDuration: pp->setInitDuration(value.doubleValue()); break;
         case FIELD_IODuration: pp->setIODuration(value.doubleValue()); break;
         case FIELD_finalDuration: pp->setFinalDuration(value.doubleValue()); break;
+        case FIELD_cpuArrivalTime: pp->setCpuArrivalTime(value.doubleValue()); break;
+        case FIELD_readyQueueArrivalTime: pp->setReadyQueueArrivalTime(value.doubleValue()); break;
+        case FIELD_timeWaitedInReadyQueue: pp->setTimeWaitedInReadyQueue(value.doubleValue()); break;
         case FIELD_isFinalPhase: pp->setIsFinalPhase(value.boolValue()); break;
         default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'MsgProcess'", field);
     }

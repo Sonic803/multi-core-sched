@@ -25,6 +25,7 @@ using namespace omnetpp;
  */
 class Cpu : public cSimpleModule
 {
+  simsignal_t cpuBusyTime_;
 protected:
   virtual void initialize();
   virtual void handleMessage(cMessage *msg);
