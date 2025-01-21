@@ -56,6 +56,10 @@ void Scheduler::initialize()
     {
         cpuQueue_.push(i);
     }
+
+    emit(numBusyCpus_, 0);
+    emit(numProcReady_, 0);
+
 }
 
 void Scheduler::handleMessage(cMessage *msg)
