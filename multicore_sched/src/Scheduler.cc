@@ -141,7 +141,7 @@ void Scheduler::scheduleProcess()
     EV << "Process " << process->getId() << " scheduled on CPU " << cpuID << endl;
 
     // Update the time waited in the ready queue
-    process->setTimeWaitedInReadyQueue(simTime() - process->getReadyQueueArrivalTime());
+    process->setTimeWaitedInReadyQueue(process->getTimeWaitedInReadyQueue() + simTime() - process->getReadyQueueArrivalTime());
 
     // process->setCpuID(cpuID);
     send(process, "processCpuOut", cpuID);
