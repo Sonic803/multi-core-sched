@@ -48,6 +48,10 @@ void ProcessGenerator::validateParameters()
     {
         error("Unknown duration type");
     }
+    if (randomStreams_.size() != 3)
+    {
+        error("randomStreams must have 3 elements");
+    }
 }
 
 void ProcessGenerator::initialize()
@@ -62,7 +66,12 @@ void ProcessGenerator::initialize()
     generationType_ = par("generationType").stringValue();
     durationType_ = par("durationType").stringValue();
 
+    cValueArray *array = dynamic_cast<cValueArray *>(par("randomStreams").objectValue());
+    randomStreams_ = array->asIntVector();
+
     validateParameters();
+
+    EV << "randomStreams: " << randomStreams_[0] << ", " << randomStreams_[1] << ", " << randomStreams_[2] << endl;
 
     timer_ = new cMessage("generationTimer");
 
@@ -78,18 +87,18 @@ void ProcessGenerator::handleMessage(cMessage *msg)
 
     if (durationType_ == "exponential")
     {
-        duration = exponential(meanProcessDuration_, 1);
+        duration = exponential(meanProcessDuration_, randomStreams_[1]);
     }
     else if (durationType_ == "uniform")
     {
-        duration = uniform(0, meanProcessDuration_ * 2, 1);
+        duration = uniform(0, meanProcessDuration_ * 2, randomStreams_[1]);
     }
     else if (durationType_ == "constant")
     {
         duration = meanProcessDuration_;
     }
 
-    double random = uniform(0, 1, 2);
+    double random = uniform(0, 1, randomStreams_[2]);
     double IOPercentage;
     double CPUPercentage;
     if (random < p_cpu_bound_) // CPU bound
@@ -127,11 +136,11 @@ void ProcessGenerator::scheduleNext()
     simtime_t generationTime;
     if (generationType_ == "exponential")
     {
-        generationTime = (simtime_t)exponential(meanGenerationTime_, 0);
+        generationTime = (simtime_t)exponential(meanGenerationTime_, randomStreams_[0]);
     }
     else if (generationType_ == "uniform")
     {
-        generationTime = (simtime_t)uniform(0, meanGenerationTime_ * 2, 0);
+        generationTime = (simtime_t)uniform(0, meanGenerationTime_ * 2, randomStreams_[0]);
     }
     else if (generationType_ == "constant")
     {

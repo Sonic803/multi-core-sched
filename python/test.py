@@ -21,7 +21,8 @@ for key in keys:
         module=a['module']
         name = a['name']
 
-        d_vectors[key][module]={}
+        if not module in d_vectors[key]:
+            d_vectors[key][module]={}
         d_vectors[key][module][name]={}
         d_vectors[key][module][name]['time']=a['time']
         d_vectors[key][module][name]['value']=a['value']
@@ -30,16 +31,15 @@ import matplotlib.pyplot as plt
 
 
 for key in d_vectors:
-    print(key)
-    time = d_vectors[key]['Computer.scheduler']['numProcReady:vector']['time']
-    value = d_vectors[key]['Computer.scheduler']['numProcReady:vector']['value']
+    time = d_vectors[key]["Computer.scheduler"]["numProcReady:vector"]["time"]
+    value = d_vectors[key]["Computer.scheduler"]["numProcReady:vector"]["value"]
 
     # Calculate running average
     cumulative_sum = 0
     running_average = []
     for i, v in enumerate(value):
         cumulative_sum += v
-        running_average.append(cumulative_sum / (i + 1))
+        running_average.append(cumulative_sum / (i + 1) / time[i])
 
     # Plot original values and running average
     # plt.plot(time, value, label=f'{key} - {module} - {name} (Values)')
