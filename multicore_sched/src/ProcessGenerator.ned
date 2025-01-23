@@ -23,7 +23,7 @@ simple ProcessGenerator
     parameters:
         double meanGenerationTime @unit("s") = default(1s);
         double meanProcessDuration @unit("s") = default(1s);
-        double p_cpu_bound = default(0.5);
+        double pCpuBound = default(0.5);
 
         double IOPercentageCPUbound = default(0.2);
         double IOPercentageIObound = default(0.8);
