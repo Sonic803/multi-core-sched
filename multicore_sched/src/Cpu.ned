@@ -23,7 +23,7 @@ simple Cpu
     parameters:
         @signal[cpuBusyTimeSignal];
         @statistic[cpuBusyTime](source="cpuBusyTimeSignal"; record=mean,vector);
-        @statistic[cpuUtilization](source="cpuBusyTimeSignal"; record=timeavg);
+        @statistic[cpuUtilization](source="cpuBusyTimeSignal"; record=sumPerDuration,vector(sumPerDuration));
 
         @display("i=device/cpu,red,0");
         
