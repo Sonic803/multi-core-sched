@@ -27,7 +27,7 @@ class ProcessGenerator : public cSimpleModule
 {
   double meanGenerationTime_;
   double meanProcessDuration_;
-  double p_cpu_bound_;
+  double pCpuBound_;
 
   double IOPercentageCPUbound_;
   double IOPercentageIObound_;

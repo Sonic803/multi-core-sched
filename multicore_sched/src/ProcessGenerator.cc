@@ -28,7 +28,7 @@ void ProcessGenerator::validateParameters()
     {
         error("meanProcessDuration must be positive");
     }
-    if (p_cpu_bound_ > 1 || p_cpu_bound_ < 0)
+    if (pCpuBound_ > 1 || pCpuBound_ < 0)
     {
         error("p_cpu_bound must be between 0 and 1");
     }
@@ -58,7 +58,7 @@ void ProcessGenerator::initialize()
 {
     meanGenerationTime_ = par("meanGenerationTime");
     meanProcessDuration_ = par("meanProcessDuration");
-    p_cpu_bound_ = par("p_cpu_bound");
+    pCpuBound_ = par("pCpuBound");
 
     IOPercentageCPUbound_ = par("IOPercentageCPUbound");
     IOPercentageIObound_ = par("IOPercentageIObound");
@@ -101,7 +101,7 @@ void ProcessGenerator::handleMessage(cMessage *msg)
     double random = uniform(0, 1, randomStreams_[2]);
     double IOPercentage;
     double CPUPercentage;
-    if (random < p_cpu_bound_) // CPU bound
+    if (random < pCpuBound_) // CPU bound
     {
         IOPercentage = IOPercentageCPUbound_;
         EV << "New process " << newProcess->getId() << " generated (CPU bound)" << endl;
