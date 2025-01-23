@@ -26,5 +26,47 @@ Having a lot of parameters to calibrate, we decided to limit the number of possi
 
 \subsection{Warm-up period}
 
+To determine the warm-up period, we observed the development of the mean number of busy CPUs over time, through 10 independent runs and with different parameters configurations. The number of busy CPUs is a good indicator of the system's stability, as it doesn't depend on the scheduling policy.
+We observed that the system stabilizes after \SI{200}{\second} in all of the above configurations and so we decided to set the warm-up period to \SI{200}{\second}.
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/lineWarmup.png}
+    \captionof{figure}{Line chart of the mean number of busy CPUs over time for different configurations of meanGenerationTime and meanProcessDuration and multiple repetitions.}
+    \label{fig:lineWarmup}
+\end{figure}
+% todo
+\begin{figure}[h]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/errorWarmup.png}
+    \captionof{figure}{Average and Std dev of the mean number of busy CPUs over the repetitions.}
+    \label{fig:errorWarmup}
+\end{figure}
+
+
+\begin{table}[h]
+\centering
+\label{tab:performance}
+\begin{tabular}{c|cc|cc|cc|cc}
+ & \multicolumn{2}{c|}{20ms, 100ms} & \multicolumn{2}{c|}{20ms, 200ms} & \multicolumn{2}{c|}{50ms, 100ms} & \multicolumn{2}{c}{50ms, 200ms} \\
+ Time (s) & Avg & Std Dev & Avg & Std Dev & Avg & Std Dev & Avg & Std Dev \\
+\midrule
+1 & 1.52 & 0.58 & 2.54 & 0.78 & 0.68 & 0.46 & 1.20 & 0.80 \\
+2 & 1.54 & 0.37 & 2.85 & 0.64 & 0.67 & 0.27 & 1.25 & 0.51 \\
+5 & 1.59 & 0.24 & 3.10 & 0.46 & 0.63 & 0.15 & 1.24 & 0.29 \\
+10 & 1.63 & 0.18 & 3.18 & 0.34 & 0.65 & 0.10 & 1.29 & 0.20 \\
+20 & 1.68 & 0.11 & 3.33 & 0.22 & 0.64 & 0.08 & 1.27 & 0.15 \\
+50 & 1.72 & 0.05 & 3.43 & 0.10 & 0.68 & 0.05 & 1.35 & 0.09 \\
+100 & 1.74 & 0.02 & 3.47 & 0.05 & 0.69 & 0.02 & 1.37 & 0.04 \\
+200 & 1.75 & 0.02 & 3.49 & 0.05 & 0.69 & 0.02 & 1.38 & 0.03 \\
+500 & 1.75 & 0.03 & 3.50 & 0.05 & 0.70 & 0.01 & 1.40 & 0.02 \\
+1000 & 1.75 & 0.01 & 3.51 & 0.02 & 0.70 & 0.01 & 1.41 & 0.02 \\
+\end{tabular}
+\end{table}
+
+    
+
 
 \subsection{Simulation duration}
