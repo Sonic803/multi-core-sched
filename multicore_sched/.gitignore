@@ -2,3 +2,4 @@ simulations/results
 src/multicore_sched
 src/multicore_sched_dbg
 simulations/*.anf
+out/
