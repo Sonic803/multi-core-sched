@@ -22,8 +22,8 @@ simple Cpu
 {
     parameters:
         @signal[cpuBusyTimeSignal];
-        @statistic[cpuBusyTime](source="cpuBusyTimeSignal"; record=mean,vector);
-        @statistic[cpuUtilization](source="sumPerDuration(cpuBusyTimeSignal)"; record=last,vector);
+        @statistic[cpuBusyTime](source="cpuBusyTimeSignal"; record=mean,vector?);
+        @statistic[cpuUtilization](source="sumPerDuration(cpuBusyTimeSignal)"; record=last,vector?);
 
         @display("i=device/cpu,red,0");
         

@@ -25,10 +25,10 @@ simple Scheduler
         @signal[waitedReadyTimeSignal];
         @signal[numProcReadySignal];
         @signal[numBusyCpusSignal];
-        @statistic[turnaroundTime](source="turnaroundTimeSignal"; record=mean,vector);
-        @statistic[waitedReadyTime](source="waitedReadyTimeSignal"; record=mean,vector);
-        @statistic[numProcReady](source="numProcReadySignal"; record=timeavg,vector);
-        @statistic[numBusyCpus](source="numBusyCpusSignal"; record=vector,timeavg,vector(timeavg));
+        @statistic[turnaroundTime](source="turnaroundTimeSignal"; record=mean,vector?,vector(mean)?);
+        @statistic[waitedReadyTime](source="waitedReadyTimeSignal"; record=mean,vector?);
+        @statistic[numProcReady](source="numProcReadySignal"; record=timeavg,vector?);
+        @statistic[numBusyCpus](source="numBusyCpusSignal"; record=vector?,timeavg,vector(timeavg)?);
 
         bool isFCFS = default(true);
 

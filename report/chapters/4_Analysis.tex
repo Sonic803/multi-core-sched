@@ -27,7 +27,7 @@ Having a lot of parameters to calibrate, we decided to limit the number of possi
 \subsection{Warm-up period}
 
 To determine the warm-up period, we observed the development of the mean number of busy CPUs over time, through 10 independent runs and with different parameters configurations. The number of busy CPUs is a good indicator of the system's stability, as it doesn't depend on the scheduling policy.
-We observed that the system stabilizes after \SI{200}{\second} in all of the above configurations and so we decided to set the warm-up period to \SI{200}{\second}.
+Our observations showed that the system stabilizes well before \SI{200}{\second} in all tested configurations. To handle variability and ensure robustness in worse cases, we set the warm-up period to \SI{200}{\second}.
 
 \begin{figure}[H]
     \captionsetup{type=figure}
@@ -36,8 +36,8 @@ We observed that the system stabilizes after \SI{200}{\second} in all of the abo
     \captionof{figure}{Line chart of the mean number of busy CPUs over time for different configurations of meanGenerationTime and meanProcessDuration and multiple repetitions.}
     \label{fig:lineWarmup}
 \end{figure}
-% todo
-\begin{figure}[h]
+
+\begin{figure}[H]
     \captionsetup{type=figure}
     \centering
     \includegraphics[width=0.9\textwidth]{./images/04/errorWarmup.png}
@@ -46,9 +46,8 @@ We observed that the system stabilizes after \SI{200}{\second} in all of the abo
 \end{figure}
 
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
-\label{tab:performance}
 \begin{tabular}{c|cc|cc|cc|cc}
  & \multicolumn{2}{c|}{20ms, 100ms} & \multicolumn{2}{c|}{20ms, 200ms} & \multicolumn{2}{c|}{50ms, 100ms} & \multicolumn{2}{c}{50ms, 200ms} \\
  Time (s) & Avg & Std Dev & Avg & Std Dev & Avg & Std Dev & Avg & Std Dev \\
@@ -64,9 +63,10 @@ We observed that the system stabilizes after \SI{200}{\second} in all of the abo
 500 & 1.75 & 0.03 & 3.50 & 0.05 & 0.70 & 0.01 & 1.40 & 0.02 \\
 1000 & 1.75 & 0.01 & 3.51 & 0.02 & 0.70 & 0.01 & 1.41 & 0.02 \\
 \end{tabular}
+\caption{Average and Std dev of the mean number of busy CPUs over the repetitions.}
+\label{tab:stabilization}
 \end{table}
 
-    
-
-
 \subsection{Simulation duration}
+
+For the simulation duration, we chose to end it at \SI{1000}{\second}. This ensures that after discarding the initial \SI{200}{\second} warm-up period, there remains \SI{800}{\second} of simulation data for analysis. Given that the mean generation time is on the order of tenths of seconds, this duration strikes a balance between obtaining statistically meaningful results and maintaining reasonable simulation times.
