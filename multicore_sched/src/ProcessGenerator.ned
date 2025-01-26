@@ -31,8 +31,6 @@ simple ProcessGenerator
         string generationType @enum("exponential","uniform","constant") = default("exponential");
         string durationType @enum("exponential","uniform","constant") = default("exponential");
 
-        object randomStreams = default([0,1,2]);
-
     gates:
         output processOut;
 

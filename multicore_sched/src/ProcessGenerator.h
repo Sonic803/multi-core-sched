@@ -35,8 +35,6 @@ class ProcessGenerator : public cSimpleModule
   std::string generationType_;
   std::string durationType_;
 
-  std::vector<intval_t> randomStreams_;
-
   cMessage *timer_;
   void scheduleNext();
 
