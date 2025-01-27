@@ -69,4 +69,56 @@ Our observations showed that the system stabilizes well before \SI{200}{\second}
 
 \subsection{Simulation duration}
 
-For the simulation duration, we chose to end it at \SI{1000}{\second}. This ensures that after discarding the initial \SI{200}{\second} warm-up period, there remains \SI{800}{\second} of simulation data for analysis. Given that the mean generation time is on the order of tenths of seconds, this duration strikes a balance between obtaining statistically meaningful results and maintaining reasonable simulation times.
+For the simulation duration, we chose to end it at \SI{1000}{\second}. This ensures that after discarding the initial \SI{200}{\second} warm-up period, there remains \SI{800}{\second} of simulation data for analysis. Given that the mean generation time is on the order of tenths of seconds, this duration strikes a balance between obtaining statistically meaningful results even after subsampling and maintaining reasonable simulation times.
+
+
+\subsection{Subsampling}
+
+To analyze the data, the assumption of IID-ness will be needed, but without further modification the samples do not uphold it. For instance, if a process finishes with a large turnaround time, which is caused by a long queue, it is likely that the same thing will happen for the next processes.
+To address this and ensure independence between samples, subsampling has been employed. The new sample is constructed taking each point of the starting sample with probability $p$. $p = \frac{1}{2^k}$ and $k$ is the smallest integer that makes $|R(j)| < z_{\alpha/2}/\sqrt{n}$ for each $j$ between 1 and 10.  
+This method for choosing k was chosen since only nearby points are correlated.
+Before trying a bigger $k$ the condition is tested multiple times with different seeds, this makes sure that $p$ doesn't become too small due to unlucky sampling.
+The closer the system is to saturation, the stronger the correlation becomes. As a result, the needed $k$ will become larger, leading to a smaller subsample size.
+
+% todo dare nomi ai grafici con metrica che ti dice quanto saturo (bello se definita nella parte iniziale)
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{./images/04/autoCorHighUnfix.png}
+        \caption{System close to saturation.}
+        \label{fig:autoCorHighUnfix}
+    \end{subfigure}
+    \hfill % Add space between the subfigures
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{./images/04/autoCorLowUnfix.png}
+        \caption{System with high load but not as close to saturation.}
+        \label{fig:autoCorLowUnfix}
+    \end{subfigure}
+    \vspace{10pt}
+    \caption{Comparison of autocorrelation without subsampling for different loads.}
+    \label{fig:autoCorComparisonUnfix}
+\end{figure}
+
+\vspace{10pt}
+
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{./images/04/autoCorHighFix.png}
+        \caption{System close to saturation with $p=1/32$.}
+        \label{fig:autoCorHighFix}
+    \end{subfigure}
+    \hfill % Add space between the subfigures
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{./images/04/autoCorLowFix.png}
+        \caption{System with high load but not as close to saturation with $p=1/8$.}
+        \label{fig:autoCorLowFix}
+    \end{subfigure}
+    \vspace{10pt}
+    \caption{Comparison of autocorrelation with subsampling for different loads.}
+    \label{fig:autoCorComparisonFix}
+\end{figure}
