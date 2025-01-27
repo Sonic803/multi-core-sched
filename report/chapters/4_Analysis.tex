@@ -79,7 +79,7 @@ For instance, if a process finishes with a large turnaround time, which is cause
 
 To address this and ensure independence between samples, subsampling has been employed. The new sample is constructed taking each point of the starting sample with probability $p$.
 $p = \frac{1}{2^k}$ and $k$ is the smallest integer that passes the Ljung-Box test.
-Using the Ljung-Box test makes it possible to automate the subsampling step. It was implmented to test the first 30 lags, with a significance level of 5\%, with this values the sample is considered independent if:
+Using the Ljung-Box test makes it possible to automate the subsampling step. It was implmented to test the first 30 lags, with a significance level of 5\%, with these values the sample is considered independent if:
 \vspace{-0.5\baselineskip}
 \begin{equation}
     Q = n(n+2) \sum_{k=1}^{30} \frac{\hat{\rho}_k^2}{n-k} < \chi^2_{0.95,30} \approx 43.77
@@ -117,7 +117,7 @@ The closer the system is to saturation, the stronger the correlation becomes as 
     \end{subfigure}
     
     \vspace{10pt} % Add vertical space before the caption
-    \caption{Comparison of autocorrelation with and without subsampling for different loads.}
+    \caption{Comparison of turnaround time autocorrelation with and without subsampling for different loads.}
     \label{fig:autoCorComparison}
 \end{figure}
 
