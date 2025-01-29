@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 import random
+from statsmodels.stats.diagnostic import acorr_ljungbox
 
 def getColors(numColors, numVariations):
     colors = []
@@ -79,3 +80,82 @@ def autocorrelation(sample):
     
     return autocorr
 
+
+def statsModelIndependence(values):
+    result = acorr_ljungbox(values, lags=30)
+    Qs=result.iloc[:,0]
+    pvalues=result.iloc[:,1]
+    return Qs,pvalues
+
+def testIndependence(values,sigLevel=0.05):
+    Qs,pvalues=statsModelIndependence(values)
+    return all(pvalues>sigLevel)
+# testIndependence(values)
+
+
+def makeValuesIndependentSlow(values):
+    k=0
+    j=0
+
+    testvalues=values.copy()
+
+    while not testIndependence(testvalues):
+
+        p=1/2**k
+
+        random.seed(j)
+
+        testvalues=[]
+
+        for value in values:
+            rand=random.random()
+            if rand<p:
+                testvalues.append(value)
+
+        
+        j+=1
+        if j==3:
+            k+=1
+            j=0
+        # assert k < 10
+        
+    print(f"At the end k={k}, number of samples is: {len(testvalues)}")
+
+    return testvalues
+
+
+def makeValuesIndependent(values):
+
+    tests=3
+    minK=100
+    minValues=[]
+
+    for i in range(tests):
+        k=0
+
+        testvalues=values.copy()
+
+        while len(testvalues) > 50 and not testIndependence(testvalues):
+
+            p=1/2
+            k+=1
+            random.seed(i*100+k)
+
+            newValues=[]
+            for value in testvalues:
+                rand=random.random()
+                if rand<p:
+                    newValues.append(value)
+                
+            testvalues=newValues.copy()
+        
+        if len(testvalues) <= 50:
+            continue
+
+        if k < minK:
+            minK=k
+            minValues=testvalues.copy()
+        
+    print(f"At the end k={minK}, number of samples is: {len(minValues)}")
+
+    return minValues
