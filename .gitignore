@@ -1,3 +1,5 @@
 /.metadata/
 .settings/
 .qtenvrc
+*.aux
+*.DS_Store

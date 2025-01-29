@@ -8,7 +8,7 @@ Having a lot of parameters to calibrate, we decided to limit the number of possi
     \item \texttt{pCpuBound}: \{0.1, 0.9\} \\
           The probability of a process being CPU-bound has two values, one for a system with a high number of I-O bound processes and the other for a system with a high number of CPU-bound processes.
     \item \texttt{meanGenerationTime, meanProcessDuration}:\\
-          The mean generation time and process duration were chosen to have a comparable load on the system for both values of \texttt{pCpuBound}. For each value of \texttt{pCpuBound} there is a simulation with heavy load and one with a lighter load. The values are on the order of tenths of seconds.
+          The mean generation time and process duration were chosen to have a comparable load on the system for both values of \texttt{pCpuBound}. For each value of \texttt{pCpuBound} there is a simulation with heavy load and one with a lighter load. The values are on the order of tenths of a second.
     \item \texttt{numCpus}: \{4, 12\} \\
           The number of CPUs was chosen to simulate quad-core, and newer systems with 12 cores.
     \item \texttt{isFCFS}: \{true, false\} \\
@@ -67,7 +67,7 @@ Our observations showed that the system stabilizes well before \SI{200}{\second}
 
 \subsection{Simulation duration}
 
-For the simulation duration, we chose to end it at \SI{1000}{\second}. This ensures that after discarding the initial \SI{200}{\second} warm-up period, there remains \SI{800}{\second} of simulation data for analysis. Given that the mean generation time is on the order of tenths of seconds, this duration strikes a balance between obtaining statistically meaningful results even after subsampling and maintaining reasonable simulation times.
+For the simulation duration, we chose to end it at \SI{1000}{\second}. This ensures that after discarding the initial \SI{200}{\second} warm-up period, there remains \SI{800}{\second} of simulation data for analysis. Given that the mean generation time is on the order of tenths of a second, this duration strikes a balance between obtaining statistically meaningful results even after subsampling and maintaining reasonable simulation times.
 
 
 \section{Subsampling}
@@ -134,7 +134,7 @@ We chose to use a confidence interval of 95\% for our analysis.
 \subsection{First-Come-First-Served}
 \subsubsection{Turnaround time}
 
-\begin{figure}
+\begin{figure}[H]
     \captionsetup{type=figure}
     \centering
     \includegraphics[width=0.9\textwidth]{./images/04/fcfs/ecdf.png}
@@ -142,7 +142,7 @@ We chose to use a confidence interval of 95\% for our analysis.
     \label{fig:fcfs_ecdf}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
     \captionsetup{type=figure}
     \centering
     \includegraphics[width=0.9\textwidth]{./images/04/fcfs/density.png}
@@ -150,7 +150,7 @@ We chose to use a confidence interval of 95\% for our analysis.
     \label{fig:fcfs_density}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
     \captionsetup{type=figure}
     \centering
     \includegraphics[width=0.9\textwidth]{./images/04/fcfs/autocorrelation.png}
@@ -158,7 +158,7 @@ We chose to use a confidence interval of 95\% for our analysis.
     \label{fig:fcfs_autocorrelation}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
     \captionsetup{type=figure}
     \centering
     \includegraphics[width=0.9\textwidth]{./images/04/fcfs/lorenz.png}
