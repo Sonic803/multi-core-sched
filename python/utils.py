@@ -155,7 +155,8 @@ def makeValuesIndependent(values):
         if k < minK:
             minK=k
             minValues=testvalues.copy()
-        
+    
+    assert minK < 100
     print(f"At the end k={minK}, number of samples is: {len(minValues)}")
 
     return minValues
