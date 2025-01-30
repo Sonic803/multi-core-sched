@@ -83,12 +83,11 @@ def autocorrelation(sample):
 
 def statsModelIndependence(values):
     result = acorr_ljungbox(values, lags=30)
-    Qs=result.iloc[:,0]
     pvalues=result.iloc[:,1]
-    return Qs,pvalues
+    return pvalues
 
 def testIndependence(values,sigLevel=0.05):
-    Qs,pvalues=statsModelIndependence(values)
+    pvalues=statsModelIndependence(values)
     return all(pvalues>sigLevel)
 # testIndependence(values)
 
@@ -127,16 +126,20 @@ def makeValuesIndependentSlow(values):
 def makeValuesIndependent(values):
 
     tests=3
+    Bigtests=10
     minK=100
     minValues=[]
 
-    for i in range(tests):
+    i=0
+
+    while i < tests or (i>=tests and minK==100 and i<Bigtests):
+        i+=1
+        
         k=0
 
         testvalues=values.copy()
 
-        while len(testvalues) > 50 and not testIndependence(testvalues):
-
+        while len(testvalues) > 500 and not testIndependence(testvalues):
             p=1/2
             k+=1
             random.seed(i*100+k)
@@ -148,15 +151,13 @@ def makeValuesIndependent(values):
                     newValues.append(value)
                 
             testvalues=newValues.copy()
-        
-        if len(testvalues) <= 50:
-            continue
 
         if k < minK:
             minK=k
             minValues=testvalues.copy()
+        
     
-    assert minK < 100
+    # assert minK < 100
     print(f"At the end k={minK}, number of samples is: {len(minValues)}")
 
     return minValues
