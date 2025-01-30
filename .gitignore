@@ -3,3 +3,7 @@
 .qtenvrc
 *.aux
 *.DS_Store
+report/main.*
+slides/main.*
+!report/main.tex
+!slides/main.tex
