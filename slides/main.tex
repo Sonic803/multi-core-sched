@@ -30,7 +30,38 @@
     \titlepage
 \end{frame}
 
-\begin{frame}{OMNeT++ Model}
+%------------------------------------------------
+
+\begin{frame}{Queueing system modelling}
+    \begin{columns}[c]
+        \column{.55\textwidth}
+        \begin{itemize}
+            \item Ready queue: $M/M/C$ queue, $C = N$ CPUs
+            \item I/O phase: $M/M/\infty$ queue
+            \item Parameters:
+            \begin{itemize}
+                \item $\gamma_1 = \frac{1}{E[T]}$: process generation rate
+                \item $\pi_0 = \pi_1 = \frac{1}{2}$: routing probabilities
+                \item $\mu_{cpu} = \frac{1}{E[t_{cpu}]}$, $\mu_{io} = \frac{1}{E[t_{io}]}$
+                \item $\rho = \frac{\lambda_1}{N\mu_{cpu}}$, where $\lambda_1 = \frac{2}{E[T]}$: CPU utilization
+            \end{itemize}
+            \item System is stable if $N > \frac{3p+1}{5}\cdot \frac{E[D]}{E[T]}$
+            \item Metrics:
+            \begin{itemize}
+                \item Turnaround time
+                \item Waiting time
+                \item CPU utilization
+                \item Ready queue length
+            \end{itemize}
+        \end{itemize}
+        \column{.4\textwidth}
+        \includegraphics[width=\textwidth]{files/queue_schema.pdf}
+    \end{columns}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{OMNeT++ model}
     \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
 
     \column{.45\textwidth} % Left column and width
@@ -48,20 +79,25 @@
 
 %------------------------------------------------
 
-\begin{frame}{Stability / Validation / cazzo ne so}
-    In this slide, some important text will be \alert{highlighted} because it's important. Please, don't abuse it.
-
-    \begin{block}{Block}
-        Sample text
-    \end{block}
-
-    \begin{alertblock}{Alertblock}
-        Sample text in red box
-    \end{alertblock}
-
-    \begin{examples}
-        Sample text in green box. The title of the block is ``Examples".
-    \end{examples}
+\begin{frame}{Warm-up and Simulation Time}
+    \begin{columns}[c]
+        \column{.95\textwidth}
+        Use number of busy CPUs (out of $N = 4$) as metric.
+    \end{columns}
+    \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+        \column{.45\textwidth} % Left column and width
+        \includegraphics[width=\textwidth]{files/report_images_04/lineWarmup.png}
+        \column{.45\textwidth} % Right column and width
+        \includegraphics[width=\textwidth]{files/report_images_04/errorWarmup.png}
+    \end{columns}
+    \begin{columns}[c]
+        \column{.6\textwidth}
+        \begin{block}{}
+            Chosen warm-up time: 200 s\\
+            Chosen simulation time: 800 s (excluding warm-up time)
+        \end{block}
+        \column{.3\textwidth}
+    \end{columns}
 \end{frame}
 
 %------------------------------------------------
@@ -84,8 +120,6 @@
 \end{frame}
 
 %------------------------------------------------
-\section{Second Section}
-%------------------------------------------------
 
 \begin{frame}{Table}
     \begin{table}
@@ -100,15 +134,6 @@
         \end{tabular}
         \caption{Table caption}
     \end{table}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}{Warm-up and Simulation Time}
-    \begin{theorem}[Mass--energy equivalence]
-        $E = mc^2$
-    \end{theorem}
-    This theorem gives us the exact values of the warm-up and simulation time.
 \end{frame}
 
 %------------------------------------------------

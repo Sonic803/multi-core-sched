@@ -46,8 +46,13 @@ These indices will be statistically analyzed to identify trends, anomalies, edge
 To perform the analysis, the following assumptions are made:
 \begin{itemize}
     \item There is sufficient memory to store the list of processes ready for execution, so the ready queue will be considered as infinite.
-    \item The scheduler itself has a negligible load on the CPUs; there is no delay between the executions of the modeled processes. \cboh{assumiamo che sia zero? if not, quanto facciamo?}
+    \item The scheduler itself has a negligible load on the CPUs; there is no delay between the executions of the modeled processes.
     \item With the shortest job first (SJF) scheduling, an accurate estimate of the execution times is known a priori. If the scheduler is FCFS, this data is not used.
+    \item \cboh{No delay tra i i vari componenti (scheduler, processgenerator, Cpu)}
+    \item \cboh{Sorting algorithm zero delay}
+    \item \cboh{Non c'è overhead nelle transizioni}
+    \item \cboh{IID RV}
+    \item \cboh{operazioni I/O indipendenti (non interferiscono)}
 \end{itemize}
 
 

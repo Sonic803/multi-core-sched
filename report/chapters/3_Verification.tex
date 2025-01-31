@@ -63,7 +63,7 @@ with fixed $\texttt{p}=0.5$ and $\texttt{N}=6$ and changing values of \texttt{E[
 keeping the ratio $\frac{\texttt{E[D]}}{\texttt{E[T]}}$ still constant and equal to 10. In this way, the generation
 rate and the service rate change in th same way and the statistics related to
 the utilization should remain the same.In particular, the values chosen are 1ms, 
-4ms and 10ms for \texttt{E[T]} and 10ms, 40ms and 100ms for \texttt{E[D]}. 
+4ms and 10ms for \texttt{E[T]} and 10ms, 40ms and 150ms for \texttt{E[D]}. 
 The simulation effectively shows the same CPU utilization around the value of
 0.835. Also the mean number of busy CPUs is constant and equal to 5 and the mean
 number of processes in the ready queue is around 4.7. The mean turnaround time, 
@@ -71,7 +71,7 @@ waiting time in the queue and service time show, instead, a proportionality
 with $\texttt{E[D]}\propto \frac{1}{\mu}$ as expected. The times are multiplied 
 with a factor 4 and 10 in the second and third scenarios with respect to the first one.
 
-A second continuity test consists in changing also the number of CPUs \texttt{N},
+A second consistency test consists in changing also the number of CPUs \texttt{N},
 changing the ratio $\frac{\texttt{E[D]}}{\texttt{E[T]}}$ but keeping constant
 $\frac{\texttt{E[D]}}{\texttt{E[T]}\cdot \texttt{N}}$, proportional to the
 utilization of the CPUs $\rho=\frac{\lambda}{N\cdot \mu}$. The chosen values
