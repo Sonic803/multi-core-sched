@@ -8,13 +8,13 @@ if [[ ! $RESULTS_DIR =~ results$ ]]; then
 	exit 1
 fi
 
-NUM_RUNS=9600
+NUM_RUNS=864
 
 rm -rf "${RESULTS_DIR}"
 mkdir -p "${RESULTS_DIR}"
 cd "${RESULTS_DIR}"
 
-seq $NUM_RUNS | parallel -j8 ../run -u Cmdenv -c MainSimulation -r '{}'
+seq $NUM_RUNS | parallel -j8 ../run -u Cmdenv -c MainSimulation -r '{}' --cpu-time-limit=30s
 
 rm -f *.json
 rm -f *.vci

@@ -5,14 +5,12 @@
 Having a lot of parameters to calibrate, we decided to limit the number of possible values for each parameter. This choice was made to reduce the number of simulations to be performed and to have a more manageable number of results to analyze. The parameters that we decided to calibrate are the following:
 
 \begin{itemize}
-    \item \texttt{meanGenerationTime}: \{20ms, 50ms\} \\
-          The mean for the generation times of the processes was chosen by considering a system under heavy and medium load.
-    \item \texttt{meanProcessDuration}: \{40ms, 100ms, 200ms\} \\
-          The mean for the duration of the processes was chosen after the estimations on the system stability. These values permit to have some combination of parameters that lead to a stable system and others that lead to an unstable system.
-    \item \texttt{pCpuBound}: \{0.25, 0.75\} \\
+    \item \texttt{pCpuBound}: \{0.1, 0.9\} \\
           The probability of a process being CPU-bound has two values, one for a system with a high number of I-O bound processes and the other for a system with a high number of CPU-bound processes.
-    \item \texttt{numCpus}: \{1, 4, 12\} \\
-          The number of CPUs was chosen to simulate single-core, quad-core, and newer systems with 12 cores.
+    \item \texttt{meanGenerationTime, meanProcessDuration}:\\
+          The mean generation time and process duration were chosen to have a comparable load on the system for both values of \texttt{pCpuBound}. For each value of \texttt{pCpuBound} there is a simulation with heavy load and one with a lighter load. The values are on the order of tenths of a second.
+    \item \texttt{numCpus}: \{4, 12\} \\
+          The number of CPUs was chosen to simulate quad-core, and newer systems with 12 cores.
     \item \texttt{isFCFS}: \{true, false\} \\
           The scheduling policy that the scheduler uses can be either First-Come-First-Served or Shortest-Job-First.
     \item \texttt{generationType}: \{"exponential", "uniform"\} \\
@@ -69,7 +67,7 @@ Our observations showed that the system stabilizes well before \SI{200}{\second}
 
 \subsection{Simulation duration}
 
-For the simulation duration, we chose to end it at \SI{1000}{\second}. This ensures that after discarding the initial \SI{200}{\second} warm-up period, there remains \SI{800}{\second} of simulation data for analysis. Given that the mean generation time is on the order of tenths of seconds, this duration strikes a balance between obtaining statistically meaningful results even after subsampling and maintaining reasonable simulation times.
+For the simulation duration, we chose to end it at \SI{1000}{\second}. This ensures that after discarding the initial \SI{200}{\second} warm-up period, there remains \SI{800}{\second} of simulation data for analysis. Given that the mean generation time is on the order of tenths of a second, this duration strikes a balance between obtaining statistically meaningful results even after subsampling and maintaining reasonable simulation times.
 
 
 \section{Subsampling}
@@ -132,3 +130,43 @@ For each of our measurements we made sure that the sample variance was stable fo
 \end{equation}
 
 We chose to use a confidence interval of 95\% for our analysis.
+
+\subsection{First-Come-First-Served}
+\subsubsection{Turnaround time}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/ecdf.png}
+    \caption{Empirical CDF of the turnaround time for different configurations of the system.}
+    \label{fig:fcfs_ecdf}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/density.png}
+    \caption{Density plot of the turnaround time for different configurations of the system.}
+    \label{fig:fcfs_density}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/autocorrelation.png}
+    \caption{Autocorrelation plot of the turnaround time for different configurations of the system.}
+    \label{fig:fcfs_autocorrelation}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/lorenz.png}
+    \caption{Lorenz curve of the turnaround time for different configurations of the system.}
+    \label{fig:fcfs_lorenz}
+\end{figure}
+
+\subsubsection{Response time}
+\subsubsection{Throughput}
+\subsubsection{CPU utilization}
+\subsection{Shortest-Job-First}
