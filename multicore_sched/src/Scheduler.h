@@ -40,9 +40,9 @@ class Scheduler : public cSimpleModule
   void scheduleProcess();
 
 protected:
-  virtual void initialize();
-  virtual void handleMessage(cMessage *msg);
-  ~Scheduler();
+  virtual void initialize() override;
+  virtual void handleMessage(cMessage *msg) override;
+  virtual void finish() override;
 };
 
 #endif

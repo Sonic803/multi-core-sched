@@ -27,8 +27,8 @@ class Cpu : public cSimpleModule
 {
   simsignal_t cpuBusyTime_;
 protected:
-  virtual void initialize();
-  virtual void handleMessage(cMessage *msg);
+  virtual void initialize() override;
+  virtual void handleMessage(cMessage *msg) override;
 };
 
 #endif
