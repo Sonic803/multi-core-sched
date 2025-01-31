@@ -27,27 +27,7 @@ void Cpu::handleMessage(cMessage *msg)
 {
     MsgProcess *process = check_and_cast<MsgProcess *>(msg);
 
-    if (process->isName("process"))
-    {
-        // Change the color of the CPU when it is active
-        getDisplayString().setTagArg("i", 2, "40");
-
-        // process to be executed
-        process->setName("executing");
-        process->setCpuArrivalTime(simTime());
-
-        if (!process->isFinalPhase())
-        {
-            EV << "Process " << process->getId() << " in init phase for " << process->getInitDuration() << " seconds" << endl;
-            scheduleAfter(process->getInitDuration(), process);
-        }
-        else
-        {
-            EV << "Process " << process->getId() << " in final phase for " << process->getFinalDuration() << " seconds" << endl;
-            scheduleAfter(process->getFinalDuration(), process);
-        }
-    }
-    else if (process->isName("executing"))
+    if (process->isSelfMessage()) // end of initial or final phase of CPU execution
     {
         // Change the color of the CPU when it finishes executing
         getDisplayString().setTagArg("i", 2, "0");
@@ -55,12 +35,31 @@ void Cpu::handleMessage(cMessage *msg)
         // process has finished executing
         process->setName("cpuFree");
 
-        // Emit the for how long was the cpu busy
+        // Emit for how long was the cpu busy
         emit(cpuBusyTime_, simTime() - process->getCpuArrivalTime());
 
         // send message to scheduler
         send(process, "processOut");
     }
+    else if (process->isName("process")) // the process is starting executing
+    {
+        // Change the color of the CPU when it is active
+        getDisplayString().setTagArg("i", 2, "40");
+
+        // Arrival time in the CPU
+        process->setCpuArrivalTime(simTime());
+
+        if (!process->isFinalPhase()) // Init Phase
+        {
+            EV << "Process " << process->getId() << " in init phase for " << process->getInitDuration() << " seconds" << endl;
+            scheduleAfter(process->getInitDuration(), process); // Execute
+        }
+        else // Final phase
+        {
+            EV << "Process " << process->getId() << " in final phase for " << process->getFinalDuration() << " seconds" << endl;
+            scheduleAfter(process->getFinalDuration(), process); // Execute
+        }
+    }
     else
-        throw cRuntimeError("Cpu::handlemessage - message not supported");
+        throw cRuntimeError("Cpu::handleMessage - message not supported");
 }

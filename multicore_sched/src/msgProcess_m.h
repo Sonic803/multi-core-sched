@@ -25,15 +25,14 @@ class MsgProcess;
  * //
  * message MsgProcess
  * {
- *     simtime_t InitDuration;
- *     simtime_t IODuration;
- *     simtime_t finalDuration;
- *     simtime_t cpuArrivalTime;
- *     simtime_t readyQueueArrivalTime;
- *     simtime_t timeWaitedInReadyQueue;
+ *     simtime_t InitDuration; // Duration of the initial processing phase
+ *     simtime_t IODuration; // Duration of the I/O phase
+ *     simtime_t finalDuration; // Duration of the final processing phase
+ *     simtime_t cpuArrivalTime; // Arrival time of the process in the CPU
+ *     simtime_t readyQueueArrivalTime; // Arrival time of the process in ready queue
+ *     simtime_t timeWaitedInReadyQueue; // Total time waited in the ready queue
  * 
  *     bool isFinalPhase; // true if the process is executing the final processing phase
- *     // int cpuID; // the ID of the CPU where the process is currently running on
  * }
  * </pre>
  */

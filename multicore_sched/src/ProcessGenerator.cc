@@ -52,20 +52,26 @@ void ProcessGenerator::validateParameters()
 
 void ProcessGenerator::initialize()
 {
-    meanGenerationTime_ = par("meanGenerationTime");
-    meanProcessDuration_ = par("meanProcessDuration");
-    pCpuBound_ = par("pCpuBound");
+    // parameters: E[T], E[D], p
+    meanGenerationTime_ = par("meanGenerationTime").doubleValue();
+    meanProcessDuration_ = par("meanProcessDuration").doubleValue();
+    pCpuBound_ = par("pCpuBound").doubleValue();
 
-    IOPercentageCPUbound_ = par("IOPercentageCPUbound");
-    IOPercentageIObound_ = par("IOPercentageIObound");
+    // parameters: percentage of CPU and IO time for CPU and IO bound processes
+    IOPercentageCPUbound_ = par("IOPercentageCPUbound").doubleValue();
+    IOPercentageIObound_ = par("IOPercentageIObound").doubleValue();
 
+    // distributions of T and D
     generationType_ = par("generationType").stringValue();
     durationType_ = par("durationType").stringValue();
 
+    // validation of parameters
     validateParameters();
 
+    // initialization of the timer to generate new processes
     timer_ = new cMessage("generationTimer");
 
+    // schedule next process generation
     scheduleNext();
 }
 
@@ -73,7 +79,7 @@ void ProcessGenerator::handleMessage(cMessage *msg)
 {
     // event generationTimer
     MsgProcess *newProcess = new MsgProcess("newProcess");
-
+    // duration of the new process
     double duration;
 
     if (durationType_ == "exponential")
@@ -89,6 +95,7 @@ void ProcessGenerator::handleMessage(cMessage *msg)
         duration = meanProcessDuration_;
     }
 
+    // decide if the new process is CPU or IO bound
     double random = uniform(0, 1, 2);
     double IOPercentage;
     double CPUPercentage;
@@ -102,8 +109,9 @@ void ProcessGenerator::handleMessage(cMessage *msg)
         IOPercentage = IOPercentageIObound_;
         EV << "New process " << newProcess->getId() << " generated (IO bound)" << endl;
     }
-    CPUPercentage = 0.5 - IOPercentage / 2;
+    CPUPercentage = 0.5 - IOPercentage / 2; // CPU = (D - IO)/2
 
+    // initialize new process fields
     newProcess->setInitDuration(duration * CPUPercentage);
     newProcess->setIODuration(duration * IOPercentage);
     newProcess->setFinalDuration(duration * CPUPercentage);
@@ -117,13 +125,14 @@ void ProcessGenerator::handleMessage(cMessage *msg)
     scheduleNext();
 }
 
-ProcessGenerator::~ProcessGenerator()
+void ProcessGenerator::finish()
 {
     cancelAndDelete(timer_);
 }
 
 void ProcessGenerator::scheduleNext()
 {
+    // wait T before generating the next process
     simtime_t generationTime;
     if (generationType_ == "exponential")
     {

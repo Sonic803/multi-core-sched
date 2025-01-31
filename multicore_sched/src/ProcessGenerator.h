@@ -25,6 +25,7 @@ using namespace omnetpp;
  */
 class ProcessGenerator : public cSimpleModule
 {
+  // parameters
   double meanGenerationTime_;
   double meanProcessDuration_;
   double pCpuBound_;
@@ -37,12 +38,12 @@ class ProcessGenerator : public cSimpleModule
 
   cMessage *timer_;
   void scheduleNext();
+  void validateParameters();
 
 protected:
-  virtual void initialize();
-  void validateParameters();
-  virtual void handleMessage(cMessage *msg);
-  ~ProcessGenerator();
+  virtual void initialize() override;
+  virtual void handleMessage(cMessage *msg) override;
+  virtual void finish() override;
 };
 
 #endif

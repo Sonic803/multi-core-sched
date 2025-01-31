@@ -21,12 +21,14 @@ using namespace std;
 
 Define_Module(Scheduler);
 
+// comparator of two processes: orders wrt the remaining time in SJF scheduling policy
 int Scheduler::ProcessComparatorSJF(cObject *a, cObject *b)
 {
     MsgProcess *aProcess = check_and_cast<MsgProcess *>(a);
     MsgProcess *bProcess = check_and_cast<MsgProcess *>(b);
     simtime_t aRemainingTime, bRemainingTime;
 
+    // remaining time from next I/O or from end
     aRemainingTime = aProcess->isFinalPhase() ? aProcess->getFinalDuration() : aProcess->getInitDuration();
     bRemainingTime = bProcess->isFinalPhase() ? bProcess->getFinalDuration() : bProcess->getInitDuration();
 
@@ -35,6 +37,7 @@ int Scheduler::ProcessComparatorSJF(cObject *a, cObject *b)
 
 void Scheduler::initialize()
 {
+    // signals
     turnaroundTime_ = registerSignal("turnaroundTimeSignal");
     waitedReadyTime_ = registerSignal("waitedReadyTimeSignal");
     numProcReady_ = registerSignal("numProcReadySignal");
@@ -42,25 +45,24 @@ void Scheduler::initialize()
 
     bool FCFS = par("isFCFS").boolValue();
     if (!FCFS)
-        readyQueue_.setup(ProcessComparatorSJF);
+        readyQueue_.setup(ProcessComparatorSJF); // sorting algorithm of the cQueue
 
-    if (getParentModule()->par("numCpus").intValue() > 0)
+    if (getParentModule()->par("numCpus").intValue() > 0) // N = 0
     {
         int numGatesIn = gate("processCpuIn", 0)->getVectorSize();
         int numGatesOut = gate("processCpuOut", 0)->getVectorSize();
 
-        if (numGatesIn != numGatesOut)
+        if (numGatesIn != numGatesOut) // check of sizes
             throw cRuntimeError("Scheduler::initialize - in != out");
 
         numGatesCpu_ = numGatesIn;
     }
-    else
+    else // N > 0
         numGatesCpu_ = 0;    
 
+    // all the CPUs are available at the beginning
     for (int i = 0; i < numGatesCpu_; i++)
-    {
         cpuQueue_.push(i);
-    }
 
     emit(numBusyCpus_, 0);
     emit(numProcReady_, 0);
@@ -71,29 +73,35 @@ void Scheduler::handleMessage(cMessage *msg)
 {
     MsgProcess *process = check_and_cast<MsgProcess *>(msg);
 
-    if (process->isName("newProcess"))
+    if (process->isSelfMessage()) // After I/O phase, again in the queue
     {
         process->setName("process");
         process->setReadyQueueArrivalTime(simTime());
         readyQueue_.insert(process);
     }
-    else if (process->isName("cpuFree"))
+    else if (process->isName("newProcess")) // New process from the generator
     {
+        process->setName("process");
+        process->setReadyQueueArrivalTime(simTime());
+        readyQueue_.insert(process);
+    }
+    else if (process->isName("cpuFree")) // Process has ended CPU execution
+    {
+        // Free CPU
         int cpuID = msg->getArrivalGate()->getIndex();
         cpuQueue_.push(cpuID);
 
-        if (!process->isFinalPhase())
+        if (!process->isFinalPhase()) // End of initial phase
         {
             process->setIsFinalPhase(true);
 
             EV << "Process " << process->getId() << " in I/O phase for " << process->getIODuration() << " seconds" << endl;
 
-            process->setName("endIO");
+            // I/O phase before queueing
             scheduleAfter(process->getIODuration(), process);
         }
-        else
+        else // process has ended
         {
-            // process has ended
             // emit the turnaround time
             simtime_t turnaroundTime = simTime() - process->getCreationTime();
             emit(turnaroundTime_, turnaroundTime);
@@ -106,15 +114,10 @@ void Scheduler::handleMessage(cMessage *msg)
             delete process;
         }
     }
-    else if (process->isName("endIO"))
-    {
-        process->setName("process");
-        process->setReadyQueueArrivalTime(simTime());
-        readyQueue_.insert(process);
-    }
     else
-        throw cRuntimeError("Scheduler::handlemessage - message not supported");
+        throw cRuntimeError("Scheduler::handleMessage - message not supported");
 
+    // schedule a process in an available CPU
     scheduleProcess();
 
     // Emit the number of processes in the ready queue
@@ -129,6 +132,7 @@ void Scheduler::handleMessage(cMessage *msg)
 
 void Scheduler::scheduleProcess()
 {
+    // No processes or no available CPUs -> do nothing
     if (readyQueue_.isEmpty() || cpuQueue_.empty())
         return;
 
@@ -141,9 +145,11 @@ void Scheduler::scheduleProcess()
     }
     EV << endl;
 
+    // Extract ana available CPU
     int cpuID = cpuQueue_.front();
     cpuQueue_.pop();
 
+    // Extract next process to be executed
     MsgProcess *process = check_and_cast<MsgProcess *>(readyQueue_.front());
     readyQueue_.pop();
 
@@ -156,13 +162,11 @@ void Scheduler::scheduleProcess()
     send(process, "processCpuOut", cpuID);
 }
 
-Scheduler::~Scheduler()
+void Scheduler::finish()
 {
     while (!readyQueue_.isEmpty())
         delete readyQueue_.pop();
 
     while (!cpuQueue_.empty())
-    {
         cpuQueue_.pop();
-    }
 }
