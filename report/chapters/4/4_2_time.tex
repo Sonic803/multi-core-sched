@@ -1,0 +1,36 @@
+
+\section{Time parameters setup}
+
+\subsection{Warm-up period}
+
+To determine the warm-up period, we observed the development of the mean number of busy CPUs over time, through 10 independent runs and with different parameters configurations. The number of busy CPUs is a good indicator of the system's stability, as it doesn't depend on the scheduling policy.
+Our observations showed that the system stabilizes well before \SI{200}{\second} in all tested configurations. To handle variability and ensure robustness in worse cases, we set the warm-up period to \SI{200}{\second}.
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/lineWarmup.png}
+    \captionof{figure}{Line chart of the mean number of busy CPUs over time for different configurations of meanGenerationTime and meanProcessDuration and multiple repetitions.}
+    \label{fig:lineWarmup}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/errorWarmup.png}
+    \captionof{figure}{Average and Std dev of the mean number of busy CPUs over the repetitions.}
+    \label{fig:errorWarmup}
+\end{figure}
+
+
+\begin{table}[H]
+    \centering
+    \scriptsize
+    \input{./tables/4/warmup.tex}
+    \caption{Average and Std dev of the mean number of busy CPUs over the repetitions.}
+    \label{tab:stabilization}
+\end{table}
+
+\subsection{Simulation duration}
+
+For the simulation duration, we chose to end it at \SI{1000}{\second}. This ensures that after discarding the initial \SI{200}{\second} warm-up period, there remains \SI{800}{\second} of simulation data for analysis. Given that the mean generation time is on the order of tenths of a second, this duration strikes a balance between obtaining statistically meaningful results even after subsampling and maintaining reasonable simulation times.

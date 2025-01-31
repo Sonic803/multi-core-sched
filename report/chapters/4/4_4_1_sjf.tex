@@ -1,0 +1,107 @@
+
+\subsection{Shortest Job First}
+\markright{\thesubsection\quad Shortest Job First} % Manually update \rightmark
+
+
+\subsubsection{Turnaround time}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/sjf/turn/ecdf.png}
+    \caption{Empirical CDF of the turnaround time of the systems.}
+    \label{fig:sjfTurnEcdf}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/sjf/turn/density.png}
+    \caption{Density plot of the turnaround time of the systems.}
+    \label{fig:sjfTurnDensity}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/sjf/turn/autocorrelation.png}
+    \caption{Autocorrelation plot of the turnaround time of the systems.}
+    \label{fig:sjfTurnAutocorrelation}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/sjf/turn/lorenz.png}
+    \caption{Lorenz curve of the turnaround time of the systems.}
+    \label{fig:sjfTurnLorenz}
+\end{figure}
+
+
+\begin{table}[H]
+    \centering
+    \scriptsize
+    \input{./tables/4/sjfTurn.tex}
+    \caption{Bootstrap results for turnaround time mean and Std Dev. (ms)}
+    \label{tab:sjfTurn}
+\end{table}
+
+
+\subsubsection{Waiting time}
+
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/sjf/wait/ecdf.png}
+    \caption{Empirical CDF of the waiting time of the systems.}
+    \label{fig:sjfWaitEcdf}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/sjf/wait/density.png}
+    \caption{Density plot of the waiting time of the systems.}
+    \label{fig:sjfWaitDensity}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/sjf/wait/autocorrelation.png}
+    \caption{Autocorrelation plot of the waiting time of the systems.}
+    \label{fig:sjfWaitAutocorrelation}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/sjf/wait/lorenz.png}
+    \caption{Lorenz curve of the waiting time of the systems.}
+    \label{fig:sjfWaitLorenz}
+\end{figure}
+
+
+\begin{table}[H]
+    \centering
+    \scriptsize
+    \input{./tables/4/sjfWait.tex}
+    \caption{Bootstrap results for waiting time mean and Std Dev. (ms)}
+    \label{tab:sjfWait}
+\end{table}
+
+
+\subsubsection{CPU utilization}
+
+There is no difference with \cref{sec:fcfsCpuUtilization} since the \texttt{FCFS}and \texttt{SJF} schedulers have the same behaviour in terms of CPU utilization.
+
+\subsubsection{Ready queue length}
+
+\begin{table}[H]
+    \centering
+    \scriptsize
+    \input{./tables/4/sjfReadyProc.tex}
+    \caption{Mean and Std Dev of number of ready processes in queue.}
+    \label{tab:sjfReadyProc}
+\end{table}

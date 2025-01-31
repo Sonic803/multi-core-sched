@@ -1,0 +1,119 @@
+
+\subsection{First Come First Served}
+\markright{\thesubsection\quad First Come First Served} % Manually update \rightmark
+
+\subsubsection{Turnaround time}
+
+From \cref{fig:fcfsTurnEcdf} and \cref{fig:fcfsTurnDensity} we can see that a larger $\rho$ skews the distribution of turnaround time to the right. The effects of $\rho$ are more pronounced with fewer CPUs, and a higher \texttt{pCpuBound}. This can be explained by the fact that, with a higher \texttt{pCpuBound} a process spends most of its time in the CPU, increasing the probability of forming a queue of ready processes.  
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/turn/ecdf.png}
+    \caption{Empirical CDF of the turnaround time of the systems.}
+    \label{fig:fcfsTurnEcdf}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/turn/density.png}
+    \caption{Density plot of the turnaround time of the systems.}
+    \label{fig:fcfsTurnDensity}
+\end{figure}
+
+From the lorenz curve in \cref{fig:fcfsTurnLorenz} we can see that the distribution that the turnaround time assumes with bigger $\rho$ is more fair than the one with smaller $\rho$. In \cref{fig:fcfsTurnAutocorrelation} we see that larger $\rho$ values make the distribution more correlated, while more CPUs and a lower \texttt{pCpuBound} make the distribution less correlated.
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/turn/lorenz.png}
+    \caption{Lorenz curve of the turnaround time of the systems.}
+    \label{fig:fcfsTurnLorenz}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/turn/autocorrelation.png}
+    \caption{Autocorrelation plot of the turnaround time of the systems.}
+    \label{fig:fcfsTurnAutocorrelation}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \scriptsize
+    \input{./tables/4/fcfsTurn.tex}
+    \caption{Bootstrap results for turnaround time mean and Std Dev. (ms)}
+    \label{tab:fcfsTurn}
+\end{table}
+
+
+\subsubsection{Waiting time}
+
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/wait/ecdf.png}
+    \caption{Empirical CDF of the waiting time of the systems.}
+    \label{fig:fcfsWaitEcdf}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/wait/density.png}
+    \caption{Density plot of the waiting time of the systems.}
+    \label{fig:fcfsWaitDensity}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/wait/autocorrelation.png}
+    \caption{Autocorrelation plot of the waiting time of the systems.}
+    \label{fig:fcfsWaitAutocorrelation}
+\end{figure}
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/wait/lorenz.png}
+    \caption{Lorenz curve of the waiting time of the systems.}
+    \label{fig:fcfsWaitLorenz}
+\end{figure}
+
+
+\begin{table}[H]
+    \centering
+    \scriptsize
+    \input{./tables/4/fcfsWait.tex}
+    \caption{Bootstrap results for waiting time mean and Std Dev. (ms)}
+    \label{tab:fcfsWait}
+\end{table}
+
+
+\subsubsection{CPU utilization}
+
+\label{sec:fcfsCpuUtilization}
+
+\begin{table}[H]
+    \centering
+    \scriptsize
+    \input{./tables/4/fcfsCpus.tex}
+    \caption{Mean and Std Dev of number of busy cpus.}
+    \label{tab:fcfsCpus}
+\end{table}
+
+
+
+\subsubsection{Ready queue length}
+
+\begin{table}[H]
+    \centering
+    \scriptsize
+    \input{./tables/4/fcfsReadyProc.tex}
+    \caption{Mean and Std Dev of number of ready processes in queue.}
+    \label{tab:fcfsReadyProc}
+\end{table}

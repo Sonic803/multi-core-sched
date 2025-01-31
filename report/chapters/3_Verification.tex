@@ -9,7 +9,7 @@ the actual state of the system with the expected one.
 For the analysis, the specific constructs of OMNeT++ (such as cQueue for the queues 
 or user defined messages) allowed to better follow the flow of events in the simulations.
 In fact the inspection of the content of messages and the state of the queues has been 
-crucial to understand the behavior of the system.
+crucial to understand the behaviour of the system.
 
 Additional information has been gathered printing log messages in the console with the 
 use of \texttt{EV}, in order to have a better comprehension of the flow of the simulation.
@@ -17,10 +17,10 @@ For example, \texttt{EV} has been very useful to track the main events of the
 simulation, such as the arrival of a new process, the start and end of the three phases 
 of execution, the assignment of a process to a CPU. 
 A simple graphical representation of the processes queued waiting to be assigned to a 
-CPU helped to verify the correct behavior of the scheduler in both FCFS and SJF policies.
+CPU helped to verify the correct behaviour of the scheduler in both FCFS and SJF policies.
 
 \section{Degeneracy test}
-Degeneracy tests aim to verify the correct behavior of the system at extreme 
+Degeneracy tests aim to verify the correct behaviour of the system at extreme 
 values of the parameters. The main quantitative parameters are the number of CPUs 
 \texttt{N}, the probability of a process to be CPU bound \texttt{p}, the mean generation time
 \texttt{E[T]} and the mean process duration \texttt{E[D]}. The possible scenarios
@@ -35,7 +35,7 @@ number of busy processors etc.), without affecting the functionality of the syst
 When the number of CPUs is set to 0, no CPU is instantiated and the processes
 are never assigned to a CPU. The system works as expected, with the processes
 waiting in the queue until the finish of the simulation time or the end of
-memory availability. Tests with only 1 CPU show a good behavior and no problem
+memory availability. Tests with only 1 CPU show a good behaviour and no problem
 related to the handling of vectors of gates with length 1. The test with
 a huge number of CPUs (100) is not different from every test with more than 
 one CPU with respect to the multicore functionalities of the computer; obviously,
@@ -54,7 +54,7 @@ end the simulation in a reasonable time. The system works as expected, with
 a high number of processes in the queue and CPUs always busy.
 
 \section{Consistency test}
-The consistency test aims to observe a similar behavior of the system when the
+The consistency test aims to observe a similar behaviour of the system when the
 parameters are changed in such a way that the result is expected to be still the same.
 
 With the hypothesis of First Come First Served scheduling policy and 
@@ -90,7 +90,7 @@ the processes and the queue grows indefinitely.
 
 The same tests have been performed combining the scenarios with the Shortest 
 Job First queueing policy and with uniform distributions of the times. The results
-confirm the consistency of the system with the expected behavior in term of
+confirm the consistency of the system with the expected behaviour in term of
 CPU utilization and stability conditions. Of course there is no more the same
 proportionality between the times and the metrics as regards queueing, while it 
 is still valid for the service times of the processes.
