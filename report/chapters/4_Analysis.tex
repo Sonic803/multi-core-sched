@@ -7,8 +7,10 @@ Having a lot of parameters to calibrate, we decided to limit the number of possi
 \begin{itemize}
     \item \texttt{pCpuBound}: \{0.1, 0.9\} \\
           The probability of a process being CPU-bound has two values, one for a system with a high number of I-O bound processes and the other for a system with a high number of CPU-bound processes.
-    \item \texttt{meanGenerationTime, meanProcessDuration}:\\
-          The mean generation time and process duration were chosen to have a comparable load on the system for both values of \texttt{pCpuBound}. For each value of \texttt{pCpuBound} there is a simulation with heavy load and one with a lighter load. The values are on the order of tenths of a second.
+    \item \texttt{meanProcessDuration}: \{\SI{0.1}{\second}\} \\
+          We chose a fixed value for the mean process duration, by doing this we can focus on the effect of the other parameters on the metrics.
+    \item \texttt{meanGenerationTime}:\\
+          The mean generation time was chosen to have a comparable load on the system for both values of \texttt{pCpuBound}. For each value of \texttt{pCpuBound} there is a simulation with heavy load and one with a lighter load. The values are in the order of tens of milliseconds.
     \item \texttt{numCpus}: \{4, 12\} \\
           The number of CPUs was chosen to simulate quad-core, and newer systems with 12 cores.
     \item \texttt{isFCFS}: \{true, false\} \\
@@ -82,38 +84,36 @@ Using the Ljung-Box test makes it possible to automate the subsampling step. It 
 \begin{equation}
     Q = n(n+2) \sum_{k=1}^{30} \frac{\hat{\rho}_k^2}{n-k} < \chi^2_{0.95,30} \approx 43.77
 \end{equation}
-The closer the system is to saturation, the stronger the correlation becomes as it can be seen in \cref{fig:autoCorComparison}.
+As utilization increases, the correlation becomes stronger, as shown in \cref{fig:autoCorComparison}.
 
 % todo dare nomi ai grafici con metrica che ti dice quanto saturo (bello se definita nella parte iniziale)
 \begin{figure}[H]
     \captionsetup{type=figure}
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{./images/04/autoCorHighUnfix.png}
-        \caption{System close to saturation. Q = 1099}
-        \label{fig:autoCorHighUnfix}
-    \end{subfigure}
-    \hfill % Add space between the subfigures
-    \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{./images/04/autoCorLowUnfix.png}
-        \caption{System with high load. Q = 129}
+        \includegraphics[width=\textwidth]{./images/04/autoCor/autoCorLowUnfix.png}
+        \caption{$\rho=0.4$, Q = 119}
         \label{fig:autoCorLowUnfix}
     \end{subfigure}
-    
-    \vspace{10pt} % Add vertical space between the two rows
-    
+    \hfill % Add space between the subfigures
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{./images/04/autoCorHighFix.png}
-        \caption{System close to saturation with $p=1/16$. Q = 25}
-        \label{fig:autoCorHighFix}
+        \includegraphics[width=\textwidth]{./images/04/autoCor/autoCorHighUnfix.png}
+        \caption{$\rho=0.5$, Q = 1333}
+        \label{fig:autoCorHighUnfix}
+    \end{subfigure}
+    \vspace{15pt} % Add vertical space between the two rows
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{./images/04/autoCor/autoCorLowFix.png}
+        \caption{$\rho=0.4$, $p=1/4$, Q = 27}
+        \label{fig:autoCorLowFix}
     \end{subfigure}
     \hfill % Add space between the subfigures
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{./images/04/autoCorLowFix.png}
-        \caption{System with high load with $p=1/4$. Q = 20}
-        \label{fig:autoCorLowFix}
+        \includegraphics[width=\textwidth]{./images/04/autoCor/autoCorHighFix.png}
+        \caption{$\rho=0.5$, $p=1/16$, Q = 22}
+        \label{fig:autoCorHighFix}
     \end{subfigure}
-    
     \vspace{10pt} % Add vertical space before the caption
     \caption{Comparison of turnaround time autocorrelation with and without subsampling for different loads.}
     \label{fig:autoCorComparison}
@@ -121,24 +121,15 @@ The closer the system is to saturation, the stronger the correlation becomes as 
 
 \section{Statistical analysis}
 
-For each of our measurements we made sure that the sample variance was stable for different simulation time, proving that the variance of the measurements is finite, and for each of them we collected more than 500 samples. Since after subsampling our observations are IID we can use the central limit theorem to state that:
-
-% todo cambiare e usare direttamente la formula del CI
-
-\begin{equation}
-    Z = \frac{\overline{X} - \mu}{\frac{S}{\sqrt{n}}} \sim N(0,1)
-\end{equation}
-
-We chose to use a confidence interval of 95\% for our analysis.
-
 \subsection{First-Come-First-Served}
+
 \subsubsection{Turnaround time}
 
 \begin{figure}[H]
     \captionsetup{type=figure}
     \centering
     \includegraphics[width=0.9\textwidth]{./images/04/fcfs/ecdf.png}
-    \caption{Empirical CDF of the turnaround time for different configurations of the system.}
+    \caption{Empirical CDF of the turnaround time of the systems.}
     \label{fig:fcfs_ecdf}
 \end{figure}
 
@@ -146,7 +137,7 @@ We chose to use a confidence interval of 95\% for our analysis.
     \captionsetup{type=figure}
     \centering
     \includegraphics[width=0.9\textwidth]{./images/04/fcfs/density.png}
-    \caption{Density plot of the turnaround time for different configurations of the system.}
+    \caption{Density plot of the turnaround time of the systems.}
     \label{fig:fcfs_density}
 \end{figure}
 
@@ -154,7 +145,7 @@ We chose to use a confidence interval of 95\% for our analysis.
     \captionsetup{type=figure}
     \centering
     \includegraphics[width=0.9\textwidth]{./images/04/fcfs/autocorrelation.png}
-    \caption{Autocorrelation plot of the turnaround time for different configurations of the system.}
+    \caption{Autocorrelation plot of the turnaround time of the systems.}
     \label{fig:fcfs_autocorrelation}
 \end{figure}
 
@@ -162,11 +153,28 @@ We chose to use a confidence interval of 95\% for our analysis.
     \captionsetup{type=figure}
     \centering
     \includegraphics[width=0.9\textwidth]{./images/04/fcfs/lorenz.png}
-    \caption{Lorenz curve of the turnaround time for different configurations of the system.}
+    \caption{Lorenz curve of the turnaround time of the systems.}
     \label{fig:fcfs_lorenz}
 \end{figure}
 
 \subsubsection{Response time}
+
 \subsubsection{Throughput}
+
 \subsubsection{CPU utilization}
+\label{sec:fcfs_cpu_utilization}
+
+\subsubsection{Queue length}
+
 \subsection{Shortest-Job-First}
+
+\subsubsection{Turnaround time}
+
+\subsubsection{Response time}
+
+\subsubsection{Throughput}
+
+\subsubsection{CPU utilization}
+There is no difference with \cref{sec:fcfs_cpu_utilization} since the \texttt{FCFS}and \texttt{SJF} schedulers have the same behaviour in terms of CPU utilization.
+
+\subsubsection{Queue length}
