@@ -27,7 +27,7 @@ From the lorenz curve in \cref{fig:fcfsTurnLorenz} we can see that the distribut
 \begin{figure}[H]
     \captionsetup{type=figure}
     \centering
-    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/turn/lorenz.png}
+    \includegraphics[width=0.7\textwidth]{./images/04/fcfs/turn/lorenz.png}
     \caption{Lorenz curve of the turnaround time of the systems.}
     \label{fig:fcfsTurnLorenz}
 \end{figure}
@@ -35,10 +35,13 @@ From the lorenz curve in \cref{fig:fcfsTurnLorenz} we can see that the distribut
 \begin{figure}[H]
     \captionsetup{type=figure}
     \centering
-    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/turn/autocorrelation.png}
+    \includegraphics[width=0.7\textwidth]{./images/04/fcfs/turn/autocorrelation.png}
     \caption{Autocorrelation plot of the turnaround time of the systems.}
     \label{fig:fcfsTurnAutocorrelation}
 \end{figure}
+
+\newpage
+After using subsampling to make the data uncorrelated, we used bootstrap to calculate the confidence intervals of the mean and the standard deviation of the turnaround time. The \texttt{std dev} was calculated since we excpect it to be equal to the mean when the distribution is exponential. It can be seen in \cref{tab:fcfsTurn} that for small $\rho$ they are similar.
 
 \begin{table}[H]
     \centering
@@ -51,11 +54,12 @@ From the lorenz curve in \cref{fig:fcfsTurnLorenz} we can see that the distribut
 
 \subsubsection{Waiting time}
 
+From \cref{fig:fcfsWaitEcdf} and \cref{fig:fcfsWaitDensity} it is clear to see that for $\rho = 0.5$ the waiting time is almost always $0$. For this reason in \cref{fig:fcfsWaitLorenz} we see that the waiting time is more unfair when $\rho$ is lower, since this is the behaviour of the line of maximum unfairness (all values$ = 0$ except for one). In \cref{fig:fcfsWaitAutocorrelation} we see that even when $\rho = 0.5$ the times are really correlated.
 
 \begin{figure}[H]
     \captionsetup{type=figure}
     \centering
-    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/wait/ecdf.png}
+    \includegraphics[width=0.85\textwidth]{./images/04/fcfs/wait/ecdf.png}
     \caption{Empirical CDF of the waiting time of the systems.}
     \label{fig:fcfsWaitEcdf}
 \end{figure}
@@ -63,17 +67,9 @@ From the lorenz curve in \cref{fig:fcfsTurnLorenz} we can see that the distribut
 \begin{figure}[H]
     \captionsetup{type=figure}
     \centering
-    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/wait/density.png}
+    \includegraphics[width=0.7\textwidth]{./images/04/fcfs/wait/density.png}
     \caption{Density plot of the waiting time of the systems.}
     \label{fig:fcfsWaitDensity}
-\end{figure}
-
-\begin{figure}[H]
-    \captionsetup{type=figure}
-    \centering
-    \includegraphics[width=0.9\textwidth]{./images/04/fcfs/wait/autocorrelation.png}
-    \caption{Autocorrelation plot of the waiting time of the systems.}
-    \label{fig:fcfsWaitAutocorrelation}
 \end{figure}
 
 \begin{figure}[H]
@@ -83,6 +79,16 @@ From the lorenz curve in \cref{fig:fcfsTurnLorenz} we can see that the distribut
     \caption{Lorenz curve of the waiting time of the systems.}
     \label{fig:fcfsWaitLorenz}
 \end{figure}
+
+
+\begin{figure}[H]
+    \captionsetup{type=figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{./images/04/fcfs/wait/autocorrelation.png}
+    \caption{Autocorrelation plot of the waiting time of the systems.}
+    \label{fig:fcfsWaitAutocorrelation}
+\end{figure}
+
 
 
 \begin{table}[H]
@@ -106,7 +112,13 @@ From the lorenz curve in \cref{fig:fcfsTurnLorenz} we can see that the distribut
     \label{tab:fcfsCpus}
 \end{table}
 
+We see that the obtained values are inline with the theoretical model:
+\begin{equation}
+    \rho * numCpus = meanCpuUtilized
+\end{equation}
 
+
+For example $0.9 * 4 \approx 3.61$ 
 
 \subsubsection{Ready queue length}
 
