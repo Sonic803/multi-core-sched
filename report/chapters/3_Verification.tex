@@ -1,1 +1,113 @@
 \chapter{Verification}
+
+\section{Code verification}
+The code has been verified to work as expected with the debug GUI that comes 
+with OMNeT++. In particular, the code has been tested trying to execute all the 
+possible paths of the code in order to simulate all different cases, and comparing 
+the actual state of the system with the expected one.
+
+For the analysis, the specific constructs of OMNeT++ (such as cQueue for the queues 
+or user defined messages) allowed to better follow the flow of events in the simulations.
+In fact the inspection of the content of messages and the state of the queues has been 
+crucial to understand the behavior of the system.
+
+Additional information has been gathered printing log messages in the console with the 
+use of \texttt{EV}, in order to have a better comprehension of the flow of the simulation.
+For example, \texttt{EV} has been very useful to track the main events of the 
+simulation, such as the arrival of a new process, the start and end of the three phases 
+of execution, the assignment of a process to a CPU. 
+A simple graphical representation of the processes queued waiting to be assigned to a 
+CPU helped to verify the correct behavior of the scheduler in both FCFS and SJF policies.
+
+\section{Degeneracy test}
+Degeneracy tests aim to verify the correct behavior of the system at extreme 
+values of the parameters. The main quantitative parameters are the number of CPUs 
+\texttt{N}, the probability of a process to be CPU bound \texttt{p}, the mean generation time
+\texttt{E[T]} and the mean process duration \texttt{E[D]}. The possible scenarios
+can be tested with FCFS or SJF scheduling policy and with exponential or uniform 
+distributions of the two times.
+
+The probability \texttt{p} set at 0 or 1 leads to the generation of
+only I/O bound or CPU bound processes. The simulation works as expected in the 
+two cases with different values of the statistics (ex. turnaround and waiting time, 
+number of busy processors etc.), without affecting the functionality of the system.
+
+When the number of CPUs is set to 0, no CPU is instantiated and the processes
+are never assigned to a CPU. The system works as expected, with the processes
+waiting in the queue until the finish of the simulation time or the end of
+memory availability. Tests with only 1 CPU show a good behavior and no problem
+related to the handling of vectors of gates with length 1. The test with
+a huge number of CPUs (100) is not different from every test with more than 
+one CPU with respect to the multicore functionalities of the computer; obviously,
+in this case, there is always an available CPU to assign a process to and 
+there is no queueing.
+
+Talking about the mean generation time \texttt{E[T]} and the mean process duration 
+\texttt{E[D]}, what matters is the ratio between the two. To simulate scenarios
+with very large (small) generation time and very small (large) process duration, the two
+parameters have been set to $10^3$ms and $10^{-3}$ms respectively, and vice versa.
+In the case of $\texttt{E[T]}>>\texttt{E[D]}$, every process executes its three phases 
+before the generation of a new one, so there is no queueing as expected.
+In the case of $\texttt{E[T]}<<\texttt{E[D]}$, the processes are generated at a very high rate
+so it is necessary to set \texttt{sim-time-limit} to a small value to 
+end the simulation in a reasonable time. The system works as expected, with
+a high number of processes in the queue and CPUs always busy.
+
+\section{Consistency test}
+The consistency test aims to observe a similar behavior of the system when the
+parameters are changed in such a way that the result is expected to be still the same.
+
+With the hypothesis of First Come First Served scheduling policy and 
+exponential distributions of times, the first tests verify the scenarios 
+with fixed $\texttt{p}=0.5$ and $\texttt{N}=6$ and changing values of \texttt{E[T]} and \texttt{E[D]}, 
+keeping the ratio $\frac{\texttt{E[D]}}{\texttt{E[T]}}$ still constant and equal to 10. In this way, the generation
+rate and the service rate change in th same way and the statistics related to
+the utilization should remain the same.In particular, the values chosen are 1ms, 
+4ms and 10ms for \texttt{E[T]} and 10ms, 40ms and 100ms for \texttt{E[D]}. 
+The simulation effectively shows the same CPU utilization around the value of
+0.835. Also the mean number of busy CPUs is constant and equal to 5 and the mean
+number of processes in the ready queue is around 4.7. The mean turnaround time, 
+waiting time in the queue and service time show, instead, a proportionality
+with $\texttt{E[D]}\propto \frac{1}{\mu}$ as expected. The times are multiplied 
+with a factor 4 and 10 in the second and third scenarios with respect to the first one.
+
+A second continuity test consists in changing also the number of CPUs \texttt{N},
+changing the ratio $\frac{\texttt{E[D]}}{\texttt{E[T]}}$ but keeping constant
+$\frac{\texttt{E[D]}}{\texttt{E[T]}\cdot \texttt{N}}$, proportional to the
+utilization of the CPUs $\rho=\frac{\lambda}{N\cdot \mu}$. The chosen values
+are 3, 6 and 9 for \texttt{N}, 1ms, 4ms and 10ms for \texttt{E[T]} and 
+5ms, 40ms and 100ms for \texttt{E[D]}. The CPU utilization extracted from
+the simulation effectively remains the same in the different scenarios and equal
+to 0.835. The mean number of busy CPUs increases proportionally with
+$\frac{\texttt{E[D]}}{\texttt{E[T]}}$: 2.5, 5 and 7.5 in the three cases. The other 
+metrics change without a clear proportionality with the parameters, still consistently 
+with the changes and with the expectations for a M/M/C system.
+
+Another important test consists in changing these parameters in conditions
+of instability. For example, in the latter case with \texttt{N} equal to 1, 2 and 3
+the system keeps being unstable: the CPUs cannot handle the load of
+the processes and the queue grows indefinitely.
+
+The same tests have been performed combining the scenarios with the Shortest 
+Job First queueing policy and with uniform distributions of the times. The results
+confirm the consistency of the system with the expected behavior in term of
+CPU utilization and stability conditions. Of course there is no more the same
+proportionality between the times and the metrics as regards queueing, while it 
+is still valid for the service times of the processes.
+
+\section{Continuity test}
+The continuity test verifies that a slight change in the input does not 
+cause wild changes on the system behaviour.
+
+In the system, the test is handled in both FCFS and SJF scheduling policies.
+The parameters vary with small steps of 5\% of their value, so that 
+\texttt{N} takes values 19, 20 and 21, \texttt{p} takes values 0.475, 0.5 and 0.525,
+\texttt{E[T]} takes values 1.425ms, 1.5ms and 1.575ms and \texttt{E[D]} takes values
+47.5ms, 50ms and 52.5ms. The system is stable in all the cases, as expected,
+and the variation of the metrics is around no more than 10\% of their value. For
+example, the CPU utilization varies from a minimum of 0.817 to a maximum of 0.854 (4.33\% of variation).
+The turnaround time goes from 49.7ms to 55.4ms (10.3\%), and similarly do the other
+statistics.
+% TODO: aggiungere grafico? CDF?
+
+

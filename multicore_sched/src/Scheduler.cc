@@ -44,13 +44,18 @@ void Scheduler::initialize()
     if (!FCFS)
         readyQueue_.setup(ProcessComparatorSJF);
 
-    int numGatesIn = gate("processCpuIn", 0)->getVectorSize();
-    int numGatesOut = gate("processCpuOut", 0)->getVectorSize();
+    if (getParentModule()->par("numCpus").intValue() > 0)
+    {
+        int numGatesIn = gate("processCpuIn", 0)->getVectorSize();
+        int numGatesOut = gate("processCpuOut", 0)->getVectorSize();
 
-    if (numGatesIn != numGatesOut)
-        throw cRuntimeError("Scheduler::initialize - in != out");
+        if (numGatesIn != numGatesOut)
+            throw cRuntimeError("Scheduler::initialize - in != out");
 
-    numGatesCpu_ = numGatesIn;
+        numGatesCpu_ = numGatesIn;
+    }
+    else
+        numGatesCpu_ = 0;    
 
     for (int i = 0; i < numGatesCpu_; i++)
     {
