@@ -10,7 +10,7 @@ $p = \frac{1}{2^k}$ and $k$ is the smallest integer that passes the Ljung-Box te
 Using the Ljung-Box test makes it possible to automate the subsampling step. It was implemented to test the first 30 lags, with a significance level of 5\%, with these values the sample is considered independent if:
 \vspace{-0.5\baselineskip}
 \begin{equation}
-    Q = n(n+2) \sum_{k=1}^{30} \frac{\hat{\rho}_k^2}{n-k} < \chi^2_{0.95,30} \approx 43.77
+    Q = n(n+2) \sum_{k=1}^{30} \frac{\hat{\rho}_k^2}{n-k} < \chi^2_{0.05,30} \approx 43.77
 \end{equation}
 As utilization increases, the correlation becomes stronger, as shown in \cref{fig:autoCorComparison}.
 
