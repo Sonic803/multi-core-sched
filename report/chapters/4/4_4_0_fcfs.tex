@@ -92,7 +92,12 @@ After using subsampling to make the data uncorrelated, we used bootstrap to calc
 
 \subsubsection{Waiting time}
 
-From \cref{fig:fcfsWaitEcdf} and \cref{fig:fcfsWaitDensity} it is clear to see that for $\rho = 0.5$ the waiting time is almost always $0$. For this reason in \cref{fig:fcfsWaitLorenz} we see that the waiting time is more unfair when $\rho$ is lower, since this is the behaviour of the line of maximum unfairness (all values$ = 0$ except for one). In \cref{fig:fcfsWaitAutocorrelation} we see that even when $\rho = 0.5$ the times are really correlated.
+From \cref{fig:fcfsWaitEcdf} and \cref{fig:fcfsWaitDensity} it is clear to see that 
+for $\rho = 0.5$ the waiting time is almost always $0$. For this reason in 
+\cref{fig:fcfsWaitLorenz} we see that the waiting time is more unfair when $\rho$ 
+is lower, since this is the behaviour of the line of maximum unfairness 
+(all values equal to 0 except for one). In \cref{fig:fcfsWaitAutocorrelation} we 
+see that even when $\rho = 0.5$ the times are really correlated.
 
 \begin{figure}[H]
     \captionsetup{type=figure}
@@ -102,6 +107,12 @@ From \cref{fig:fcfsWaitEcdf} and \cref{fig:fcfsWaitDensity} it is clear to see t
     \label{fig:fcfsWaitEcdf}
 \end{figure}
 
+From the plots of the empirical CDF it is possible to observe that the utilization
+of the CPUs impacts more than the variation of the single parameters \texttt{pCpuBound}
+and \texttt{numCpus} on the waiting time. Anyway, looking from left to
+right in particular at the impact of the first parameter, the time of CPU processing increases
+and the distribution moves to the higher values.
+
 \begin{figure}[H]
     \captionsetup{type=figure}
     \centering
@@ -109,6 +120,12 @@ From \cref{fig:fcfsWaitEcdf} and \cref{fig:fcfsWaitDensity} it is clear to see t
     \caption{Density plot of the waiting time of the systems.}
     \label{fig:fcfsWaitDensity}
 \end{figure}
+
+The analysis of the probability density function of the waiting time confirms
+that at low values of $\rho$ the process are almost never queued. From left below to
+right above, the distribution is more uniform and skewed to the right, with the density
+concentrated less around the value 0.
+
 
 \begin{figure}[H]
     \captionsetup{type=figure}
@@ -118,6 +135,10 @@ From \cref{fig:fcfsWaitEcdf} and \cref{fig:fcfsWaitDensity} it is clear to see t
     \label{fig:fcfsWaitLorenz}
 \end{figure}
 
+We also analyzed the unfairness of the distribution of the wating time in the 
+different scenarios, plotting the Lorenz curves in \cref{fig:fcfsWaitLorenz}.
+In every case the distribution is more unfair when $\rho$ is lower, since the
+waiting time is almost always $0$. 
 
 \begin{figure}[H]
     \captionsetup{type=figure}
@@ -127,7 +148,11 @@ From \cref{fig:fcfsWaitEcdf} and \cref{fig:fcfsWaitDensity} it is clear to see t
     \label{fig:fcfsWaitAutocorrelation}
 \end{figure}
 
-
+The observation of the autocorrelation of the waiting time has been done with the 
+lag plots in \cref{fig:fcfsWaitAutocorrelation}. With high utilization,
+the correlation is always high and this reflects the expectations: if a process has
+waited a long time, the next one will probably wait a long time too. When the system
+is less utilized, the correlation is lower, since queuing is less likely.
 
 \begin{table}[H]
     \centering
@@ -137,6 +162,14 @@ From \cref{fig:fcfsWaitEcdf} and \cref{fig:fcfsWaitDensity} it is clear to see t
     \label{tab:fcfsWait}
 \end{table}
 
+The quantitative analysis of the waiting time in the exponential case is reported in 
+\cref{tab:fcfsWait}. Of course, with same duration of the processes and same
+utilization, the more each process spends in the CPU, the more the processes
+meanly waits in the queue. So with high \texttt{pCpuBound} and low \texttt{numCpus}
+the mean value of the waiting time increases.
+
+Since the confidence intervals of the mean value and of the standard deviation do 
+not overlap, we can infer that the distribution is not exponential.
 
 \subsubsection{CPU utilization}
 
@@ -156,9 +189,12 @@ We see that the obtained values are inline with the theoretical model:
 \end{equation}
 
 
-For example $0.9 * 4 \approx 3.61$ 
+For example, in the second column, $0.9 * 4 \approx 3.61$ 
 
 \subsubsection{Ready queue length}
+
+In \cref{tab:fcfsReadyProc} it is reported the mean and the standard deviation 
+of the number of ready processes in the queue. 
 
 \begin{table}[H]
     \centering
@@ -167,3 +203,7 @@ For example $0.9 * 4 \approx 3.61$
     \caption{Mean and Std Dev of number of ready processes in queue.}
     \label{tab:fcfsReadyProc}
 \end{table}
+
+The values are in line with the theoretical model. In fact, applying Little's Law and computing the ratio between
+$E[N_q]$ and the arrival rate, the values obtained are coherent with the mean of
+the waiting time described in \cref{tab:fcfsWait}.
