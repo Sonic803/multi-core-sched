@@ -103,66 +103,117 @@
 
 %------------------------------------------------
 
-\begin{frame}{Casi particolari?}
-    \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+\begin{frame}{Subsampling}
+    \begin{columns}[c]
+        \column{.95\textwidth}
+        To test the independence of the turnaround time, we used the Ljung-Box test with a significance level of 5\%.
+        When the test fails, we subsample the data.
+    \end{columns}
+    \begin{columns}[c]
+        \column{.27\textwidth}
+        \includegraphics[width=\textwidth]{files/report_images_04/autoCor/autoCorLowUnfix.png}
+        \includegraphics[width=\textwidth]{files/report_images_04/autoCor/autoCorLowFix.png}
+        \column{.18\textwidth}
+        $\rho=0.4$\\Q = 119\\
+        \vspace{.35\textheight}
+        Subsample $p=1/4$\\Q = 27
+        \column{.27\textwidth}
+        \includegraphics[width=\textwidth]{files/report_images_04/autoCor/autoCorHighUnfix.png}
+        \includegraphics[width=\textwidth]{files/report_images_04/autoCor/autoCorHighFix.png}
+        \column{.18\textwidth}
+        $\rho=0.5$\\Q = 1333\\
+        \vspace{.35\textheight}
+        Subsample $p=1/16$\\Q = 22
+    \end{columns}
+    %\caption{Comparison of turnaround time autocorrelation with and without subsampling for different loads.}
+\end{frame}
 
-        \column{.45\textwidth} % Left column and width
-        \textbf{Heading}
-        \begin{enumerate}
-            \item Statement
-            \item Explanation
-            \item Example
-        \end{enumerate}
+%------------------------------------------------
 
-        \column{.45\textwidth} % Right column and width
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+% TODO: togli un po' di immagini, sono troppe
 
+\begin{frame}{FCFS Turnaround Time}
+    \begin{columns}[c]
+        \column{.5\textwidth}
+        \includegraphics[width=\textwidth]{files/report_images_04/fcfs/turn/density.png}
+        \column{.5\textwidth}
+        % \includegraphics[width=\textwidth]{files/report_images_04/fcfs/turn/qq.png}
     \end{columns}
 \end{frame}
 
 %------------------------------------------------
 
-\begin{frame}{Table}
-    \begin{table}
-        \begin{tabular}{l l l}
-            \toprule
-            \textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2} \\
-            \midrule
-            Treatment 1         & 0.0003262           & 0.562               \\
-            Treatment 2         & 0.0015681           & 0.910               \\
-            Treatment 3         & 0.0009271           & 0.296               \\
-            \bottomrule
-        \end{tabular}
-        \caption{Table caption}
-    \end{table}
+\begin{frame}{FCFS Waiting Time}
+    \begin{columns}[c]
+        \column{.5\textwidth}
+        \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/ecdf.png}
+        \column{.5\textwidth}
+        \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/density.png}
+    \end{columns}
 \end{frame}
 
 %------------------------------------------------
 
-\begin{frame}{Statistiche statistiche}
-    Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
-    %\begin{figure}
-    %\includegraphics[width=0.8\linewidth]{test}
-    %\end{figure}
+\begin{frame}{FCFS Waiting Time}
+    \begin{columns}[c]
+        \column{.5\textwidth}
+        % \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/lorenz.png}
+        \column{.5\textwidth}
+        \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/autocorrelation.png}
+    \end{columns}
 \end{frame}
 
 %------------------------------------------------
 
-\begin{frame}{First Come First Served}
-    grafici molto bellini
+\begin{frame}{SJF Turnaround Time}
+    \begin{columns}[c]
+        \column{.5\textwidth}
+        \includegraphics[width=\textwidth]{files/report_images_04/sjf/turn/density.png}
+        \column{.5\textwidth}
+        \includegraphics[width=\textwidth]{files/report_images_04/sjf/turn/autocorrelation.png}
+    \end{columns}
 \end{frame}
 
 %------------------------------------------------
 
-\begin{frame}{Shortest Job First}
+\begin{frame}{SJF Waiting Time}
+    \begin{columns}[c]
+        \column{.5\textwidth}
+        \includegraphics[width=\textwidth]{files/report_images_04/sjf/wait/density.png}
+        \column{.5\textwidth}
+    \end{columns}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}{Conclusions}
-    \centerline{\textbf{Vogliamo dedicarle una slide?}}
+    \begin{itemize}
+        \item FCFS and SJF have similar turnaround time
+        \item FCFS has higher waiting time
+        \item SJF has lower autocorrelation
+    \end{itemize}
 \end{frame}
 
 %----------------------------------------------------------------------------------------
 
 \end{document}
+
+% FCFS:
+% turn around density (exp se basso, poi a cazzo) SI METTE
+% turn around lorenz (lo butterei)
+% turn around autocorr (alta se rho alto) (butterei visto subsampling)
+% turn around qq plot vs exponential (butterei)
+% 
+% waiting ecdf (utile per dire che è ~= 0 per rho .5)
+% waiting density (un po' a caso)
+% waiting lorenz (tanto più unfair se rho basso)
+% waiting autocorr (più interesting di turn around?)
+% 
+% SJF:
+% turn around density (due exp perfetti e tanto uguali)
+% turn around autocrr (scorrelati siuuu)
+% turn around qq plot vs exponential
+% 
+% waiting ecdf (ancora più schiacciata di fcfs)
+% waiting autocorr (correlati ma scendono)
+% waiting lorenz (super unfair con rho basso) (lo butterei)
