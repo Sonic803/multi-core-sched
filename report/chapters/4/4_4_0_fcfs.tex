@@ -1,10 +1,20 @@
 
 \subsection{First Come First Served}
 \markright{\thesubsection\quad First Come First Served} % Manually update \rightmark
-
+For first, we analyze the First Come First Served (FCFS) scheduling policy. 
+In the next section we will analyze the Shortest Job First (SJF) policy and compare
+the two scenarios.
 \subsubsection{Turnaround time}
 
-From \cref{fig:fcfsTurnEcdf} and \cref{fig:fcfsTurnDensity} we can see that a larger $\rho$ skews the distribution of turnaround time to the right. The effects of $\rho$ are more pronounced with fewer CPUs, and a higher \texttt{pCpuBound}. This can be explained by the fact that, with a higher \texttt{pCpuBound} a process spends most of its time in the CPU, increasing the probability of forming a queue of ready processes.  
+The first metric to be analyzed is the turnaround time.
+From \cref{fig:fcfsTurnEcdf} and \cref{fig:fcfsTurnDensity} we can see that a larger utilization of the CPUs $\rho$ 
+skews the distribution of turnaround time to the right. This can be explained 
+by the fact that the more the CPUs are utilized, the more probable is for a
+process to be queued and to wait more.
+The effects of $\rho$ are more pronounced with fewer CPUs (as expected), and a higher 
+\texttt{pCpuBound}. In fact, with a higher \texttt{pCpuBound} a process spends 
+most of its time in the CPU, increasing the probability of forming a queue of 
+ready processes.
 
 \begin{figure}[H]
     \captionsetup{type=figure}
@@ -14,6 +24,19 @@ From \cref{fig:fcfsTurnEcdf} and \cref{fig:fcfsTurnDensity} we can see that a la
     \label{fig:fcfsTurnEcdf}
 \end{figure}
 
+The empirical probability density function of the turnaround time, shown
+in \cref{fig:fcfsTurnDensity}, confirms the previous observations. Comparing
+the plot above to the right with the others, we can observe that
+the distribution is more uniform and skewed to the right when $\rho$ is higher,
+the processes are more likely CPU bound and there are few CPUs. In this case, 
+the turnaround time can be modeled as the sum of the waiting time in the queue with the 
+service time of the process. 
+
+When, instead, the utilization and the \texttt{pCpuBound} are lower and the 
+number of CPUs is higher, the distribution is approximately an exponential:
+in this case the effects of queueing are less pronounced and the turnaround time
+is mainly determined by the (exponential) service time of the process.
+
 \begin{figure}[H]
     \captionsetup{type=figure}
     \centering
@@ -22,7 +45,11 @@ From \cref{fig:fcfsTurnEcdf} and \cref{fig:fcfsTurnDensity} we can see that a la
     \label{fig:fcfsTurnDensity}
 \end{figure}
 
-From the lorenz curve in \cref{fig:fcfsTurnLorenz} we can see that the distribution that the turnaround time assumes with bigger $\rho$ is more fair than the one with smaller $\rho$. In \cref{fig:fcfsTurnAutocorrelation} we see that larger $\rho$ values make the distribution more correlated, while more CPUs and a lower \texttt{pCpuBound} make the distribution less correlated.
+From the lorenz curve in \cref{fig:fcfsTurnLorenz} we can see that the 
+distribution that the turnaround time assumes with bigger $\rho$ is more fair 
+than the one with smaller $\rho$. We can explain this by the fact that when the
+system is more utilized, the processes are more likely to be queued and to wait
+a similar amount of time, making the distribution more fair.
 
 \begin{figure}[H]
     \captionsetup{type=figure}
@@ -32,6 +59,18 @@ From the lorenz curve in \cref{fig:fcfsTurnLorenz} we can see that the distribut
     \label{fig:fcfsTurnLorenz}
 \end{figure}
 
+In \cref{fig:fcfsTurnAutocorrelation} we see 
+that larger $\rho$ values make the distribution more correlated, while more 
+CPUs and a lower \texttt{pCpuBound} make the distribution less correlated.
+
+This fits perfectly with the model: when the system is more utilized, the
+processes are more likely to be queued, so the waiting time of
+each process will be closely related to the one of its nearest 
+processes in the queue, making the distribution
+more correlated. When the system is less utilized, the processes are more likely
+to be served immediately, making the distribution dependent only on the service
+time of the process.
+
 \begin{figure}[H]
     \captionsetup{type=figure}
     \centering
@@ -40,8 +79,7 @@ From the lorenz curve in \cref{fig:fcfsTurnLorenz} we can see that the distribut
     \label{fig:fcfsTurnAutocorrelation}
 \end{figure}
 
-\newpage
-After using subsampling to make the data uncorrelated, we used bootstrap to calculate the confidence intervals of the mean and the standard deviation of the turnaround time. The \texttt{std dev} was calculated since we excpect it to be equal to the mean when the distribution is exponential. It can be seen in \cref{tab:fcfsTurn} that for small $\rho$ they are similar.
+After using subsampling to make the data uncorrelated, we used bootstrap to calculate the confidence intervals of the mean and the standard deviation of the turnaround time. The \texttt{std dev} was calculated since we expect it to be equal to the mean when the distribution is exponential. It can be seen in \cref{tab:fcfsTurn} that for small $\rho$ they are similar.
 
 \begin{table}[H]
     \centering

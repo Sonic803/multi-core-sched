@@ -3,7 +3,7 @@
 
 \subsection{Warm-up period}
 
-To determine the warm-up period, we observed the development of the mean number of busy CPUs over time, through 10 independent runs and with different parameters configurations. The number of busy CPUs is a good indicator of the system's stability, as it doesn't depend on the scheduling policy.
+To determine the warm-up period, we observed the evolution of the mean number of busy CPUs over time, through 10 independent runs and with different parameters configurations. The number of busy CPUs is a good indicator of the system's stability, as it doesn't depend on the scheduling policy.
 Our observations showed that the system stabilizes well before \SI{200}{\second} in all tested configurations. To handle variability and ensure robustness in worse cases, we set the warm-up period to \SI{200}{\second}.
 
 \begin{figure}[H]
@@ -13,6 +13,16 @@ Our observations showed that the system stabilizes well before \SI{200}{\second}
     \captionof{figure}{Line chart of the mean number of busy CPUs over time for different configurations of meanGenerationTime and meanProcessDuration and multiple repetitions.}
     \label{fig:lineWarmup}
 \end{figure}
+
+For a better analysis, in the \autoref{fig:errorWarmup} we show the 
+average and standard deviation of the mean number of busy CPUs over the repetitions. 
+Effectively, the mean and the standard deviation stabilize after $10^2$s in all
+the scenarios.
+
+The numerical analysis is reported in \autoref{tab:stabilization}. Observing the evolution
+of the mean number of busy CPUs over time and of the standard deviation, with particular focus
+on the stabilization of these values in the last rows of the table, we can finally
+conclude that the warm-up period can be set to \SI{200}{\second}.
 
 \begin{figure}[H]
     \captionsetup{type=figure}

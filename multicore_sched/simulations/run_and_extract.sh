@@ -14,22 +14,24 @@ rm -rf "${RESULTS_DIR}"
 mkdir -p "${RESULTS_DIR}"
 cd "${RESULTS_DIR}"
 
-seq $NUM_RUNS | parallel -j8 ../run -u Cmdenv -c MainSimulation -r '{}' --cpu-time-limit=30s
+seq $NUM_RUNS | parallel -j8 ../run -u Cmdenv -c tredPlot -r '{}' --cpu-time-limit=30s
 
-rm -f *.json
-rm -f *.vci
+opp_scavetool x "tredPlot"* -o "3d_new.json"
 
-extract_one() {
-	base_name=$1
-	output_name=$(echo "$1" | cut -d'-' -f2)
+# rm -f *.json
+# rm -f *.vci
+
+# extract_one() {
+# 	base_name=$1
+# 	output_name=$(echo "$1" | cut -d'-' -f2)
 	
-	# Run opp_scavetool on the file
-	# if [ ! -f "${output_name}.json" ]; then
-	opp_scavetool x "${base_name}"* -o "${output_name}.json"
-	# fi
-}
+# 	# Run opp_scavetool on the file
+# 	# if [ ! -f "${output_name}.json" ]; then
+# 	opp_scavetool x "${base_name}"* -o "${output_name}.json"
+# 	# fi
+# }
 
-export -f extract_one
+# export -f extract_one
 
-base_names=$(ls | cut -d'#' -f1 | uniq)
-echo "$base_names" | parallel -j16 extract_one '{}'
+# base_names=$(ls | cut -d'#' -f1 | uniq)
+# echo "$base_names" | parallel -j16 extract_one '{}'

@@ -24,9 +24,26 @@ The scheduler can be implemented to follow two distinct policies:
 
 \section{Objectives}
 
-The aim of this project is to assess and analyze the execution of a multi-core scheduling system under varying operational scenarios. The objective is to determine the optimal characteristics of the systems to make it work without the need to discard processes. Furthermore, the analysis aims to assess the conditions under which the best system behaviour is achieved in terms of resource use efficiency and time performance evaluation. In particular, the different configurations taken into consideration are the scheduling policies, the number of CPUs in the system, the type of the processes (CPU bound or I/O bound), the generation intervals and the duration of processes.
+The aim of this project is to analyze the execution of a multi-core 
+scheduling system under varying operational scenarios. 
 
-The overarching goal is to generate insights into optimal scheduling strategies and resource allocation practices for multi-core environments, enhancing system throughput and minimizing delays.
+One of the the objectives is 
+to determine the optimal characteristics of the system in order to make 
+it work without the need to discard processes. Furthermore, the analysis 
+aims to assess the impact of the number of CPUs and of the distributions
+of generation and duration times as regards the system’s performance.
+Another objective is to realize a resource efficiency evaluation. 
+
+In particular, 
+the different configurations taken into 
+consideration are the scheduling policies, the number of CPUs in the 
+system, the type of the processes (CPU bound or I/O bound), the 
+generation intervals and the duration of processes.
+
+The overarching goal is to generate insights about the impact of the scheduling 
+strategy and of the functional parameters of the system to evaluate
+the performance of multi-core environments, 
+enhancing system efficiency and minimizing delays.
 
 
 \section{Indices}
@@ -34,7 +51,7 @@ The overarching goal is to generate insights into optimal scheduling strategies 
 To evaluate the system’s performance comprehensively, the following indices will be analyzed in detail:
 \begin{itemize}
     \item turnaround time $R$: defined as the total time elapsed from the arrival of a process in the system to its completion. This metric provides a measure of the computer’s overall responsiveness and of the time required for different types of processes to be executed;
-    \item waiting time $W$: the cumulative time \cboh{COME LO CALCOLIAMO?} a process spends in the ready queue before being assigned to a CPU for execution. This metric represents the impact on the turnaround time of the queuing policy and of the workload of the system;
+    \item waiting time $W$: the cumulative time a process spends in the ready queue before being assigned to a CPU for execution. This metric represents the impact on the turnaround time of the queuing policy and of the workload of the system;
     \item CPU utilization of the $n_{th}$ CPU $\rho_n$: the fraction of time that each CPU is actively engaged in executing processes instead of being idle. This metric reflects the efficiency of resource usage within the system;
     \item active CPUs over time $N_A$: a dynamic measure of the number of CPUs actively processing tasks at any given moment. This index helps assess load distribution and system evolution;
     \item queue length over time $N_q$: tracks the size of the ready queue throughout the simulation, highlighting bottlenecks and variations in process scheduling.
@@ -42,17 +59,17 @@ To evaluate the system’s performance comprehensively, the following indices wi
 
 These indices will be statistically analyzed to identify trends, anomalies, edge cases and key factors influencing system performance. By examining these metrics under diverse configurations of \( N \), \( p \) and scheduler policies, the project aims to provide actionable recommendations for improving the efficiency and adaptability of multi-core scheduling systems.
 
-\section{Assumptions?}
+\section{Assumptions}
 To perform the analysis, the following assumptions are made:
 \begin{itemize}
-    \item There is sufficient memory to store the list of processes ready for execution, so the ready queue will be considered as infinite.
-    \item The scheduler itself has a negligible load on the CPUs; there is no delay between the executions of the modeled processes.
-    \item With the shortest job first (SJF) scheduling, an accurate estimate of the execution times is known a priori. If the scheduler is FCFS, this data is not used.
-    \item \cboh{No delay tra i i vari componenti (scheduler, processgenerator, Cpu)}
-    \item \cboh{Sorting algorithm zero delay}
-    \item \cboh{Non c'è overhead nelle transizioni}
-    \item \cboh{IID RV}
-    \item \cboh{operazioni I/O indipendenti (non interferiscono)}
+    \item there is sufficient memory to store the list of processes ready for execution, so the ready queue will be considered as infinite and there is no need to discard processes;
+    \item there is no overhead nor delay for every process from the generation to the arrival in the ready queue;
+    \item there is no overhead nor delay for every process in the transitions between the ready queue, the CPUs and the I/O phase;
+    \item the only workload of the CPUs is the execution of the processes. Scheduling, I/O, process generation do not require CPU time;
+    \item the overhead for the sorting algorithm in SJF policy and for the queue handling is negligible;
+    \item with the shortest job first (SJF) scheduling, an accurate estimate of the execution times is known a priori. If the scheduler is FCFS, this data is not used;
+    \item the generation time, the duration time and the characteristic of a process of being CPU-bound or I/O-bound are respectively IID Random Variables;
+    \item I/O operations and CPU processing do not interfere with each other.
 \end{itemize}
 
 
@@ -62,7 +79,7 @@ To perform the analysis, the following assumptions are made:
 
 The system can be modeled as a queueing network as shown in \autoref{fig:schema}.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \captionsetup{type=figure}
     \centering
     \includegraphics[width=0.6\textwidth]{images/03/schema.pdf}
