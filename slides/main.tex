@@ -43,7 +43,8 @@
                 \item $\gamma_1 = \frac{1}{E[T]}$: process generation rate
                 \item $\pi_0 = \pi_1 = \frac{1}{2}$: routing probabilities
                 \item $\mu_{cpu} = \frac{1}{E[t_{cpu}]}$, $\mu_{io} = \frac{1}{E[t_{io}]}$
-                \item $\rho = \frac{\lambda_1}{N\mu_{cpu}}$, where $\lambda_1 = \frac{2}{E[T]}$: CPU utilization
+                \item $p$: probability of a process to be CPU bound
+                \item $\rho = \frac{\lambda_1}{N\mu_{cpu}}$: CPU utilization ($\lambda_1 = \frac{2}{E[T]}$)
             \end{itemize}
             \item System is stable if $N > \frac{3p+1}{5}\cdot \frac{E[D]}{E[T]}$
             \item Metrics:
@@ -82,7 +83,7 @@
 \begin{frame}{Warm-up and Simulation Time}
     \begin{columns}[c]
         \column{.95\textwidth}
-        Use number of busy CPUs (out of $N = 4$) as metric.
+        We used number of busy CPUs (out of $N = 4$) as metric.
     \end{columns}
     \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
         \column{.45\textwidth} % Left column and width
