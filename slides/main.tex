@@ -9,6 +9,7 @@
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \usepackage{multirow}
+\usepackage{moresize}
 
 %----------------------------------------------------------------------------------------
 %    TITLE PAGE
@@ -189,33 +190,56 @@
 
 %------------------------------------------------
 
-\begin{frame}{FCFS Waiting Time}
+\begin{frame}{Waiting Times Comparison}
+    \vspace{-1em}
     \begin{columns}[c]
         \column{.5\textwidth}
-        \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/ecdf.png}
+        \begin{center}
+            FCFS
+        \end{center}
+        \vspace{-0.8em}
+        \includegraphics[width=0.9\textwidth]{files/report_images_04/fcfs/wait/ecdf.png}
         \column{.5\textwidth}
-        \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/autocorrelation.png}
+        \begin{center}
+            SJF
+        \end{center}
+        \vspace{-0.8em}
+        \includegraphics[width=0.9\textwidth]{files/report_images_04/sjf/wait/ecdf.png}
     \end{columns}
 \end{frame}
 
 %------------------------------------------------
 
-\begin{frame}{SJF Waiting Time}
-    \begin{columns}[c]
-        \column{.5\textwidth}
-        \includegraphics[width=\textwidth]{files/report_images_04/sjf/wait/density.png}
-        \column{.5\textwidth}
-    \end{columns}
+\begin{frame}{Waiting Times Comparison}
+    \begin{center}
+        \ssmall
+        FCFS:\\
+        \vspace{1em}
+        \input{../report/tables/4/fcfsWait.tex}\\
+        \vspace{1em}
+        SJF:\\
+        \vspace{1em}
+        \input{../report/tables/4/sjfWait.tex}\\
+    \end{center}
 \end{frame}
 
 %------------------------------------------------
 
-\begin{frame}{Conclusions}
-    \begin{itemize}
-        \item FCFS and SJF have similar turnaround time
-        \item FCFS has higher waiting time
-        \item SJF has lower autocorrelation
-    \end{itemize}
+\begin{frame}{Waiting Time Autocorrelation}
+    \vspace{-0.5em}
+    \begin{columns}[c]
+        \column{.5\textwidth}
+        \begin{center}
+            FCFS
+        \end{center}
+        \column{.5\textwidth}
+        \begin{center}
+            SJF
+        \end{center}
+    \end{columns}
+    \begin{center}
+        \includegraphics[width=0.9\textwidth]{files/report_images_04/autocorrelation_cmp.png}
+    \end{center}
 \end{frame}
 
 %----------------------------------------------------------------------------------------
