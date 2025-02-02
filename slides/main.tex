@@ -8,6 +8,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{multirow}
 
 %----------------------------------------------------------------------------------------
 %    TITLE PAGE
@@ -83,7 +84,7 @@
 \begin{frame}{Warm-up and Simulation Time}
     \begin{columns}[c]
         \column{.95\textwidth}
-        We used number of busy CPUs (out of $N = 4$) as metric.
+        We used number of busy CPUs (out of $N = 4$) as a metric.
     \end{columns}
     \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
         \column{.45\textwidth} % Left column and width
@@ -137,29 +138,41 @@
         \column{.5\textwidth}
         \includegraphics[width=\textwidth]{files/report_images_04/fcfs/turn/density.png}
         \column{.5\textwidth}
+        \tiny
+        \begin{tabular}{llc|c|c|c}
+            \toprule
+            & & \multicolumn{4}{c}{numCpus = 4} \\
+            & & \multicolumn{2}{c|}{pCpuBound = 0.1} & \multicolumn{2}{c}{pCpuBound = 0.9} \\
+            Index & & $\rho = 0.5$ & $\rho = 0.9$ & $\rho = 0.5$ & $\rho = 0.9$ \\
+            \midrule
+            \multirow{3}{*}{Mean} & Value & 103.1 & 195.0 & 108.5 & 358.4 \\
+            & 95\% CI Low & 101.2 & 181.2 & 102.3 & 321.2 \\
+            & 95\% CI High & 105.3 & 211.5 & 114.5 & 395.7 \\
+            \midrule
+            \multirow{3}{*}{Std Dev} & Value & 101.3 & 137.2 & 108.1 & 316.6 \\
+            & 95\% CI Low & 98.6 & 126.2 & 102.2 & 280.2 \\
+            & 95\% CI High & 104.1 & 152.1 & 115.1 & 365.0 \\
+            \bottomrule
+        \end{tabular}
+        \begin{tabular}{llc|c|c|c}
+            \toprule
+            & & \multicolumn{4}{c}{numCpus = 12} \\
+            & & \multicolumn{2}{c|}{pCpuBound = 0.1} & \multicolumn{2}{c}{pCpuBound = 0.9} \\
+            Index & & $\rho = 0.5$ & $\rho = 0.9$ & $\rho = 0.5$ & $\rho = 0.9$ \\
+            \midrule
+            \multirow{3}{*}{Mean} & Value & 99.6 & 132.5 & 100.1 & 144.6 \\
+            & 95\% CI Low & 97.7 & 121.5 & 98.6 & 131.4 \\
+            & 95\% CI High & 101.6 & 146.0 & 101.4 & 158.2 \\
+            \midrule
+            \multirow{3}{*}{Std Dev} & Value & 99.3 & 113.5 & 98.8 & 126.7 \\
+            & 95\% CI Low & 96.7 & 102.4 & 97.0 & 111.8 \\
+            & 95\% CI High & 102.0 & 127.6 & 100.6 & 145.3 \\
+            \bottomrule
+        \end{tabular}
+        \\
+        \vspace{1em}
+        Mean and standard deviation of turnaround time for FCFS. (ms)
         % \includegraphics[width=\textwidth]{files/report_images_04/fcfs/turn/qq.png}
-    \end{columns}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}{FCFS Waiting Time}
-    \begin{columns}[c]
-        \column{.5\textwidth}
-        \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/ecdf.png}
-        \column{.5\textwidth}
-        \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/density.png}
-    \end{columns}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}{FCFS Waiting Time}
-    \begin{columns}[c]
-        \column{.5\textwidth}
-        % \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/lorenz.png}
-        \column{.5\textwidth}
-        \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/autocorrelation.png}
     \end{columns}
 \end{frame}
 
@@ -170,7 +183,18 @@
         \column{.5\textwidth}
         \includegraphics[width=\textwidth]{files/report_images_04/sjf/turn/density.png}
         \column{.5\textwidth}
-        \includegraphics[width=\textwidth]{files/report_images_04/sjf/turn/autocorrelation.png}
+        \includegraphics[width=\textwidth]{files/report_images_04/sjf/turn/qq.png}
+    \end{columns}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{FCFS Waiting Time}
+    \begin{columns}[c]
+        \column{.5\textwidth}
+        \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/ecdf.png}
+        \column{.5\textwidth}
+        \includegraphics[width=\textwidth]{files/report_images_04/fcfs/wait/autocorrelation.png}
     \end{columns}
 \end{frame}
 
